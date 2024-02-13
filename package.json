@@ -1,0 +1,18 @@
+{
+  "name": "todo-pocketbase",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "./pocketbase/pocketbase serve"
+  },
+  "devDependencies": {
+    "vite": "^5.0.8"
+  },
+  "dependencies": {
+    "pocketbase": "^0.21.1"
+  }
+}
