@@ -1,48 +1,69 @@
-import './style/pico.min.css'
-import './style/style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './components/counter.js'
-import { setupNote } from './components/create.js'
-import modal from './components/modal.js'
+import "./style/pico.min.css";
+import "./style/style.css";
+import { setupNote } from "./components/create.js";
+import modal from "./components/modal.js";
+import PocketBase from "pocketbase";
+import { removeNote } from "./components/removeNote.js";
 
-import PocketBase from 'pocketbase';
-
-const pb = new PocketBase('http://localhost:8090/');
-
-const records = await pb.collection('notes').getFullList({
-  sort: '-created',
+const pb = new PocketBase("http://localhost:8090/");
+let list = [];
+const records = await pb.collection("notes").getFullList({
+  sort: "-created",
 });
 console.log(records);
-let list = [];
-records.forEach(item => list.push(/*html*/`
-  <article>
-    <h5>${item.title}</h5>
-    <p>${item.text}</p>
-    <p>${new Date(item.created).toLocaleDateString("de-DE")}</p>
-    ${JSON.stringify(item)}
-  </article>
-`));
-document.querySelector('#app').innerHTML = /*html*/`
+records.forEach((item) => {
+  switch (item.created === item.updated) {
+    case true:
+      list.push(/*html*/ `
+          <article class="noteList" id="${item.id}">
+          <header>
+          <button id="delete">Finished</button>
+          <i class="fa-solid fa-clipboard" id="clipBoardFa"></i>
+            <h5 class="noteHeader" id="${item.id}-title">${item.title}</h5>
+          </header>
+          <body>
+          <p id="noteText" id="${item.id}-text">${item.text}</p>
+          </body>
+          <footer>
+            <p id="noteDate"><span id="datePrefix">Created: </span>${new Date(
+              item.created
+            ).toLocaleDateString("de-DE")} um ${new Date(
+        item.updated
+      ).getHours()}:${new Date(item.updated).getMinutes()} Uhr</p></footer>
+          <!--${JSON.stringify(item)}-->
+        </article>
+      `);
+      break;
+    case false:
+      list.push(/*html*/ `
+          <article class="noteList" id="${item.id}">
+          <header>
+          <i class="fa-solid fa-clipboard" id="clipBoardFa"></i>
+            <h5 class="noteHeader" id="${item.id}-title">${item.title}</h5>
+          </header>
+          <body>
+          <p id="noteText" id="${item.id}-text">${item.text}</p>
+          </body>
+          <footer>
+          <p id="noteDateUpdate"><span id="dateUpdatePrefix">Updated: </span>${new Date(
+            item.updated
+          ).toLocaleDateString("de-DE")} um ${new Date(
+        item.updated
+      ).getHours()}:${new Date(item.updated).getMinutes()} Uhr</p>
+          </footer>
+          <!--${JSON.stringify(item)}-->
+        </article>
+      `);
+      break;
+  }
+});
+
+document.querySelector("#app").innerHTML = /*html*/ `
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-    
     <section id="modal">
         <h2>Note</h2>
-        <button id ="testModal" class="contrast" data-target="modal-example" onclick="toggleModal(event)">
-          Create new note
+        <button id ="testModal" class="contrast" data-target="modal-example">
+        <i class="fa-solid fa-plus" id="plusFA"> </i>
         </button>
      </section>
     <div>
@@ -55,14 +76,14 @@ document.querySelector('#app').innerHTML = /*html*/`
           <h3>Create new note</h3>
         </header>
         <form id="newNote" action="">
-          <input type="text" class="form-control" placeholder="Title" id="noteTile" name="noteTitle">
-          <input type="text" class="form-control" placeholder="Note" id="noteText" name="noteText">
+          <input type="text" class="form-control" placeholder="Title" id="noteTile" name="noteTitle" required>
+          <input type="text" class="form-control" placeholder="Note" id="noteText" name="noteText" required>
           <button type="submit" id="create">Create</button>
         </form>
       </article>
     </dialog>
-`
+`;
 
-setupCounter(document.querySelector('#counter'))
-setupNote(document.querySelector('#newNote'))
-modal(document.querySelector('#testModal'));
+setupNote(document.querySelector("#newNote"));
+modal(document.querySelector("#testModal"));
+removeNote(document.querySelector("#delete"));

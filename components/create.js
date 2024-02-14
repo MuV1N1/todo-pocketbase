@@ -19,5 +19,7 @@ async function create(title, note) {
     title: title,
     text: note,
   };
-  const record = await pb.collection("notes").create(data);
+  
+  await pb.collection("notes").create(data);
+  location.reload();
 }
