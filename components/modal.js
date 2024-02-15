@@ -1,4 +1,5 @@
 export default function (element) {
+
   const isOpenClass = "modal-is-open";
   const openingClass = "modal-is-opening";
   const closingClass = "modal-is-closing";
@@ -8,7 +9,6 @@ export default function (element) {
 
   element.addEventListener("click", (event) => {
     event.preventDefault();
-  
     const modal = document.getElementById(event.currentTarget.dataset.target);
     if (!modal) return;
     modal && (isModalOpen(modal) ? closeModal(modal) : openModal(modal));

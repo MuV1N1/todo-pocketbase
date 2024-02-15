@@ -1,14 +1,15 @@
-import PocketBase from 'pocketbase';
+import PocketBase from "pocketbase";
 
 export function removeNote(element) {
-  element.addEventListener("delete", (e) => {
+  if(element === null) return;
+  element.addEventListener("click", (e) => {
     e.preventDefault();
-    create(e.target);
-    // handle submit
+    console.log(element.getAttribute("name"));
+    deleteNote(element.id);
   });
 }
-async function create(item) {
+async function deleteNote(id) {
   const pb = new PocketBase("http://localhost:8090/");
-  await pb.collection("notes").delete(item);
+  await pb.collection("notes").delete(id);
   location.reload();
 }
