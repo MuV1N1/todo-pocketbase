@@ -11,7 +11,7 @@ let list = [];
 const records = await pb.collection("notes").getFullList({
   sort: "-created",
 });
-console.log(records);
+//console.log(records);
 
 records.forEach((item) => {
 
@@ -25,23 +25,23 @@ records.forEach((item) => {
     year: 'numeric'
   }) + " Uhr";
 
-  const deadline = new Date(item.deadline).toLocaleString("de-DE", {
+  let deadline = new Date(item.deadline).toLocaleString("de-DE", {
     timeZone: 'Europe/Berlin',
     day: '2-digit',
     month: 'short',
     year: 'numeric'
   });
-  
+  if(deadline == "Invalid Date") deadline = "No deadline"
   list.push(/*html*/`
     <dialog id="${item.id}">
     <article>
       <header>
         <h3>Update</h3>
       </header>
-      <form id=${item.id} class="updateNote" action="">
-        <input type="text" class="form-control" value="${item.title}" placeholder="Title" id="newNoteTitle" name="newNoteTitle">
-        <input type="text" class="form-control" value="${item.text}" placeholder="Text" id="newNoteText" name="newNoteText">
-        <input type="date" class="form-control" value="${item.deadline}" id="newNoteDeadline" name="newNoteDeadline">
+      <form id=${item.id} class="updateNote" action=""> 
+        <input type="text" class="form-control" value="${item.title}" placeholder="Title..." id="newNoteTitle" name="newNoteTitle">
+        <input type="text" class="form-control" value="${item.text}" placeholder="Text..." id="newNoteText" name="newNoteText">
+        <input type="date" class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline">
         <button type="submit" id="${item.id}">Update</button>
       </form>
     </article>
@@ -127,9 +127,9 @@ document.querySelector("#app").innerHTML = /*html*/ `
           <h3>Create new note</h3>
         </header>
         <form id="newNote" action="">
-          <input type="text" class="form-control" placeholder="Title" id="noteTitle" name="noteTitle" required>
-          <input type="text" class="form-control" placeholder="Note" id="noteText" name="noteText" required>
-          <input type="date" class="form-control" id="noteDeadline" name="noteDeadline" required>
+          <input type="text" class="form-control" placeholder="Title..." id="noteTitle" name="noteTitle" required>
+          <input type="text" class="form-control" placeholder="Note..." id="noteText" name="noteText" required>
+          <input type="date" class="form-control" id="noteDeadline" name="noteDeadline">
           <button type="submit" id="create">Create</button>
         </form>
       </article>

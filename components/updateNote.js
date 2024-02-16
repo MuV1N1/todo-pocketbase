@@ -27,11 +27,10 @@ function note(element) {
           title: title,
           text: text,
           deadline: deadline
-        }
+        };
         const id = element.id;
-  
-      
+
         await pb.collection('notes').update(id, data);
-        location.reload;
+        location.reload();
       })
 }
