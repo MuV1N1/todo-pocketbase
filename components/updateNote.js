@@ -9,7 +9,6 @@ export async function updateNote(element){
     
 }
 
-
 function note(element) {
     element.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -18,7 +17,7 @@ function note(element) {
         const records = await pb.collection("notes").getFullList({
           sort: "-created",
         });
-    
+        const id = element.id;
         const title = formData.get("newNoteTitle");
         const text = formData.get("newNoteText");
         const deadline = formData.get("newNoteDeadline");
@@ -28,7 +27,7 @@ function note(element) {
           text: text,
           deadline: deadline
         };
-        const id = element.id;
+        
 
         await pb.collection('notes').update(id, data);
         location.reload();
