@@ -3,7 +3,7 @@ import PocketBase from 'pocketbase';
 export function setupNote(element) {
   element.addEventListener("submit", (e) => {
     e.preventDefault();
-    const formData = new FormData(event.target);
+    const formData = new FormData(e.target);
   
     const title = formData.get("noteTitle");
     const note = formData.get("noteText");
@@ -23,5 +23,7 @@ async function create(title, note, date) {
   };
   
   await pb.collection("notes").create(data);
-  location.reload();
+  setTimeout(e =>{
+    location.reload(true);
+  }),3000000;
 }

@@ -30,6 +30,8 @@ function note(element) {
         
 
         await pb.collection('notes').update(id, data);
-        location.reload();
+        setTimeout(e =>{
+          location.reload(true);
+        }),3000000;
       })
 }
