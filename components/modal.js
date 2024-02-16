@@ -1,4 +1,6 @@
-export default function (element) {
+import { updateNote } from "./updateNote";
+
+export default function (element, bool) {
 
   const isOpenClass = "modal-is-open";
   const openingClass = "modal-is-opening";
@@ -6,10 +8,12 @@ export default function (element) {
   const scrollbarWidthCssVar = "--pico-scrollbar-width";
   const animationDuration = 400; // ms
   let visibleModal = null;
-
+  
   element.addEventListener("click", (event) => {
     event.preventDefault();
+
     const modal = document.getElementById(event.currentTarget.dataset.target);
+    if(element.type != "button") openModal(modal);
     if (!modal) return;
     modal && (isModalOpen(modal) ? closeModal(modal) : openModal(modal));
   });
@@ -72,5 +76,6 @@ export default function (element) {
   const isScrollbarVisible = () => {
     return document.body.scrollHeight > screen.height;
   };
-  
+ 
+
 }

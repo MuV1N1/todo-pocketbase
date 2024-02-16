@@ -46,11 +46,7 @@ body {
     background-color: #ffffff;
   }
 }
-#testModal, button{
-  color: #fff;
-  background-color: var(--button-background);
-  border: 0px solid var(--button-background);
-}
+
 #modal-example > article > header > h3{
   text-align: center;
   margin-bottom: 0px;
@@ -93,25 +89,34 @@ body {
   text-align: center;
 }
 .noteList footer{
-  text-align: right;
   font-weight:700;
   font-size: normal;
-  vertical-align: middle;
   max-height: 200px;
   height: 60px;
-  
+  display: flex;
 }
 .noteList footer #noteDate #datePrefix{
   color: rgba(101, 101, 107, 0.425);
   bottom: 0;
   left: 0;
+  
 }
 .noteList footer #noteDate{
   font-size:medium;
   text-align: right;
-  vertical-align: middle;
+  flex-basis: 49.5%;
 }
-
+.noteList footer #noteDeadline #deadlinePrefix{
+  color: rgba(255, 0, 0, 0.527);
+  bottom: 0;
+  right: 0;
+  
+}
+.noteList footer #noteDeadline{
+  font-size:medium;
+  text-align: left;
+  flex-basis: 49.5%;
+}
 #plusFA{
   width: auto;
   height: auto;
@@ -123,7 +128,7 @@ body {
   color: rgba(101, 101, 107, 0.425);
   bottom: 0;
   left: 0;
-
+  
 }
 .noteList footer #noteDateUpdate{
   font-size: medium;

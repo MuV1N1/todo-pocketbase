@@ -4,7 +4,6 @@ export function removeNote(element) {
   if(element === null) return;
   element.addEventListener("click", (e) => {
     e.preventDefault();
-    console.log(element.getAttribute("name"));
     deleteNote(element.id);
   });
 }
