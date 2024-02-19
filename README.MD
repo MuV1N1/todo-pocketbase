@@ -7,7 +7,7 @@ I hope that you will use this List. When you see issues feel free to create an [
 
 
 ## Info
-If your pocketbase command show that it can´t find pocketbase than you have to [download](https://pocketbase.io/docs/) for your os!
+If your pocketbase command show that it can´t find pocketbase than you have to [download Pocketbase](https://pocketbase.io/docs/) for your os!
 
 ### Ressources
 - https://picocss.com

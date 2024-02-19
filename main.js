@@ -5,47 +5,79 @@ import modal from "./components/notes/modal.js";
 import PocketBase from "pocketbase";
 import { removeNote } from "./components/notes/removeNote.js";
 import { updateNote } from "./components/notes/updateNote.js";
+import { finishNote } from "./components/notes/finishNote.js";
+import { unfinishNote } from "./components/notes/unfinishNote.js";
 
 const pb = new PocketBase("http://localhost:8090/");
 let list = [];
 const records = await pb.collection("notes").getFullList({
   sort: "-created",
+  sort: "deadline",
+  sort: "finished",
 });
-// const users = await pb.collection("users").getFullList({
-//   sort: "-created",
-// });
-//console.log(records);
-// sideing(true, "marvin.kleiner1910@gmail.com");
-// function sideing(logedin, email) {
-//   const userList = users.filter(e => e.email == email);
-//   let userID = "";
-//   userList.forEach(e => userID = e.id);
-//   console.log(userID)
+// console.log(records)
+records.forEach((item) => {
+  const date =
+    new Date(item.created).toLocaleString("de-DE", {
+      timeZone: "Europe/Berlin",
+      weekday: "long",
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }) + " Uhr";
+  let deadline = new Date(item.deadline).toLocaleString("de-DE", {
+    timeZone: "Europe/Berlin",
+    weekday: "long",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+  const finishedDate =
+    new Date(item.finishedDate).toLocaleString("de-DE", {
+      timeZone: "Europe/Berlin",
+      weekday: "long",
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }) + " Uhr";
 
-//   const fr = records.filter((item) => item.user == userID);
-//   console.log(fr)
+  if (deadline == "Invalid Date") deadline = date;
+  let finishLi = [];
+  let finsihDateLi = [];
+  let finishedClass = "";
+  let finishedIcon = [];
+  if (item.finished) {
+    finishedIcon.push(/*html*/ `
+      <i class="fa-regular fa-square-check"></i>
+    `);
+    finishedClass = "finished";
+    finishLi.push(/*html*/ `
+    <li><button id ="${item.id}" class="deleteButton" type="button">Delete</button></li>
+    <li><button id ="${item.id}" class="unfinishButton" type="button">Unfinish</button></li>
+    `);
+    finsihDateLi.push(/*html*/ `
+    <p id="noteDeadline"><span id="deadlinePrefix">Finished: </span> ${finishedDate}</p>
+    <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+    `);
+  } else {
+    finishedIcon.push(/*html*/ `
+      <i class="fa-regular fa-clipboard"></i>
+    `);
+    finishedClass = "notFinished";
+    finishLi.push(/*html*/ `
+    <li><button id ="${item.id}" class="finishButton" type="button">Finish</button></li>
+    `);
+    finsihDateLi.push(/*html*/ `
+    <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
+    <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+    `);
+  }
 
-//   if (logedin) {
-    records.forEach((item) => {
-      const date =
-        new Date(item.created).toLocaleString("de-DE", {
-          timeZone: "Europe/Berlin",
-          weekday: "long",
-          hour: "2-digit",
-          minute: "2-digit",
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        }) + " Uhr";
-      let deadline = new Date(item.deadline).toLocaleString("de-DE", {
-        timeZone: "Europe/Berlin",
-        weekday: "long",
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      });
-      if (deadline == "Invalid Date") deadline = date;
-      list.push(/*html*/ `
+  list.push(/*html*/ `
         <dialog id="${item.id}">
         <article>
           <header>
@@ -60,44 +92,39 @@ const records = await pb.collection("notes").getFullList({
         </article>
       </dialog>
       `);
-      switch (item.created === item.updated) {
-        case true:
-          list.push(/*html*/ `
-               <article class="noteList" id="${item.id}">
+  switch (item.created === item.updated) {
+    case true:
+      list.push(/*html*/ `
+               <article class="noteList ${finishedClass}" id="${item.id}">
                 <header class="noteListHeader">
                   <ul class="delete">
-                  <li><button id ="${
-                    item.id
-                  }" class="deleteButton" type="button">Finished</button>
-                  </li>
+                    ${finishLi}
                   <li>
                     <button class="updateModalButton" id="${
                       item.id
                     }" data-target="${item.id}" type="button">Update
                   </li>
                   </ul>
-                  <i class="fa-solid fa-clipboard" id="clipBoardFa"></i>
+                  ${finishedIcon}
                   <h5 class="noteHeader" id="${item.id}">${item.title}</h5>
                 </header>
               <body>
               <p id="noteText" id="${item.id}">${item.text}</p>
               </body>
               <footer>
-                <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
-                <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
-                </footer>
+                ${finsihDateLi}
+              </footer>
               <!--${JSON.stringify(item)}-->
             </article>
           `);
-          break;
-        case false:
-          list.push(/*html*/ `
+      break;
+    case false:
+      list.push(/*html*/ `
               <article class="noteList" id="${item.id}">
               <header class="noteListHeader">
               <ul class="delete">
-                  <li><button id ="${item.id}" class="deleteButton" name="${
-            item.id
-          }" type="button">Finished</button>
+                  <li>
+                    ${finishLi}
                   </li>
                   <li>
                   <button class="updateModalButton" data-target="${
@@ -105,7 +132,7 @@ const records = await pb.collection("notes").getFullList({
                   }" type="button" >Update
                 </li>
                   </ul>
-              <i class="fa-solid fa-clipboard" id="clipBoardFa"></i>
+                  ${finishedIcon}
                 <h5 class="noteHeader" id="${item.id}-title">${item.title}</h5>
                 
               </header>
@@ -113,17 +140,16 @@ const records = await pb.collection("notes").getFullList({
               <p id="noteText" id="${item.id}-text">${item.text}</p>
               </body>
               <footer>
-                <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
-                <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
-                </footer>
+                ${finsihDateLi}
+              </footer>
               <!--${JSON.stringify(item)}-->
             </article>
           `);
-          break;
-      }
-    });
+      break;
+  }
+});
 
-    document.querySelector("#app").innerHTML = /*html*/ `
+document.querySelector("#app").innerHTML = /*html*/ `
       
       <div>
         <section id="create">
@@ -151,53 +177,16 @@ const records = await pb.collection("notes").getFullList({
         </dialog>
     
     `;
-    //Note Stuff
-    setupNote(document.querySelector("#newNote"));
+//Note Stuff
+setupNote(document.querySelector("#newNote"));
 
-    modal(document.querySelector("#createModalButton"));
-    document.querySelectorAll(".updateModalButton").forEach((element) => {
-      modal(element);
-    });
-    document.querySelectorAll(".deleteButton").forEach((element) => {
-      removeNote(element);
-    });
-    updateNote(document.querySelectorAll(".updateNote"));
-//   } else {
-    
-// }
-// }
-// document.querySelector("#app").innerHTML = /*html*/ `
-//       <div class="login">
-//         <h2>Login</h2>
-//         <p id="automatic">When you don't have an account, you automatically register</p>
-//         <form id="loginSec" action="">
-//           <input type="text" class="form-control" placeholder="E-Mail..." id="user" name="user" required>
-//           <input type="password" class="form-control" placeholder="Password..." id="password" name="password" required>
-//           <button type="submit" id="login" >Login</button>
-//         </form>
-
-//       <div>
-//         <h2>Log in to see your notes</h2>
-//       </div>
-//     `;
-//     login(document.querySelector("#login"));
-
-
-// function login(element) {
-//     element.addEventListener("submit", (e) => {
-//     e.preventDefault();
-//     console.log(users);
-//     const formData = new FormData(e.target);
-//     const email = formData.get("user");
-//     const password = formData.get("password");
-
-//     const userList = users.filter(e => e.email == email);
-//     let userID = "";
-//     userList.forEach(e => userID = e.id);
-//     console.log(userID)
-    
-//     if(userList.password === password) {sideing(true, email); location.reload();}
-
-//     pb.collection("users")
-//   });
-//}
+modal(document.querySelector("#createModalButton"));
+document.querySelectorAll(".updateModalButton").forEach((element) => {
+  modal(element);
+});
+finishNote(document.querySelectorAll(".finishButton"));
+unfinishNote(document.querySelectorAll(".unfinishButton"));
+document.querySelectorAll(".deleteButton").forEach((element) => {
+  removeNote(element);
+});
+updateNote(document.querySelectorAll(".updateNote"));

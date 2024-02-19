@@ -14,9 +14,6 @@ function note(element) {
         e.preventDefault();
         const formData = new FormData(e.target);
   
-        const records = await pb.collection("notes").getFullList({
-          sort: "-created",
-        });
         const id = element.id;
         const title = formData.get("newNoteTitle");
         const text = formData.get("newNoteText");
