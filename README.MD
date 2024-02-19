@@ -6,6 +6,9 @@ Please do not hope that this project has no issues. <br>
 I hope that you will use this List. When you see issues feel free to create an [pull request](https://github.com/MuV1N1/todo-pocketbase/pulls) or just create an [issue](https://github.com/MuV1N1/todo-pocketbase/issues)
 
 
-## Ressources
+## Info
+If your pocketbase command show that it can´t find pocketbase than you have to [download](https://pocketbase.io/docs/) for your os!
+
+### Ressources
 - https://picocss.com
 - https://pocketbase.io/docs/
