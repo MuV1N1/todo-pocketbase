@@ -151,11 +151,8 @@ body {
   height: 100%;
   z-index: 1;
 }
-#automatic{
-  color: red; 
-  white-space: 50px;
-}
+
 .finished{
   vertical-align: middle + 2px;
-  text-decoration:line-through red 3px;
+  text-decoration:line-through rgb(0, 255, 0) 3px;
 }

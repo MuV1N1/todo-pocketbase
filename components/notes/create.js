@@ -1,14 +1,14 @@
-import PocketBase from "pocketbase";
+import PocketBase from 'pocketbase';
 
 export function setupNote(element) {
   element.addEventListener("submit", (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-
+  
     const title = formData.get("noteTitle");
     const note = formData.get("noteText");
     const date = formData.get("noteDeadline");
-
+    
     create(title, note, date);
     // handle submit
   });
@@ -20,12 +20,11 @@ async function create(title, note, date) {
     title: title,
     text: note,
     deadline: date,
-    finished: false,
+    finished: false
   };
-
+  
   await pb.collection("notes").create(data);
-  setTimeout((e) => {
+  setTimeout(e =>{
     location.reload(true);
-  }),
-    3000000;
+  }),3000000;
 }

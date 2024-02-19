@@ -109,7 +109,7 @@ records.forEach((item) => {
                   </li>
                   </ul>
                   ${finishedIcon}
-                  <h5 class="noteHeader ${finishedClass}" id="${item.id}">${item.title}</h5>
+                  <h5 class="noteHeader" id="${item.id}">${item.title}</h5>
                 </header>
               <body>
               <p class="${finishedClass}" id="noteText ${item.id}">${item.text}</p>
@@ -136,7 +136,7 @@ records.forEach((item) => {
                 </li>
                   </ul>
                   ${finishedIcon}
-                <h5 class="noteHeader ${finishedClass}" id="${item.id}-title">${item.title}</h5>
+                <h5 class="noteHeader" id="${item.id}-title">${item.title}</h5>
                 
               </header>
               <body>
