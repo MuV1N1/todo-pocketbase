@@ -18,9 +18,7 @@ function finish(element) {
       finishedDate: date,
     };
     await pb.collection("notes").update(id, data);
-    setTimeout((e) => {
-      location.reload(true);
-    }),
-      3000000;
+    location.reload(false);
+
   });
 }

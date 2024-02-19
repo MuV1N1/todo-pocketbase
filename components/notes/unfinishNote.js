@@ -11,7 +11,6 @@ export async function unfinishNote(element) {
 function unfinish(element) {
   element.addEventListener("click", async (e) => {
     e.preventDefault();
-    console.log("This is a test");
     const id = element.id;
     const data = {
       finished: false,
@@ -19,9 +18,7 @@ function unfinish(element) {
     };
 
     await pb.collection("notes").update(id, data);
-    setTimeout((e) => {
-      location.reload(true);
-    }),
-      3000000;
+    location.reload(false);
+
   });
 }

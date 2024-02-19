@@ -14,7 +14,7 @@ export function removeNote(element) {
       deleteNote(element.id);
     } else {
       setTimeout((e) => {
-        location.reload(true);
+        location.reload(false);
       }),
         3000000;
     }
@@ -23,8 +23,6 @@ export function removeNote(element) {
 async function deleteNote(id) {
   const pb = new PocketBase("http://localhost:8090/");
   await pb.collection("notes").delete(id);
-  setTimeout((e) => {
-    location.reload(true);
-  }),
-    3000000;
+  location.reload(false);
+
 }

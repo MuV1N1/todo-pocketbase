@@ -1,4 +1,3 @@
-import { updateNote } from "./updateNote";
 
 export default function (element, bool) {
 

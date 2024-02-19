@@ -96,7 +96,7 @@ body {
   display: flex;
 }
 .noteList footer #noteDate #datePrefix{
-  color: rgba(101, 101, 107, 0.425);
+  color: rgba(101, 101, 107, 0.651);
   bottom: 0;
   left: 0;
   
@@ -152,6 +152,7 @@ body {
 }
 
 .finished{
+  color: #000;
   vertical-align: middle + 2px;
-  text-decoration:line-through rgba(0, 255, 0, 0.863) 3px;
+  text-decoration:line-through rgba(0, 255, 0, 0.459) 100%;
 }

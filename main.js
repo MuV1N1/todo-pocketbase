@@ -18,8 +18,9 @@ const records = await pb.collection("notes").getFullList({
 });
 
 let list = [];
-
+// loop each item of records
 records.forEach((item) => {
+  //declare date's
   const date =
     new Date(item.created).toLocaleString("de-DE", {
       timeZone: "Europe/Berlin",
@@ -49,13 +50,15 @@ records.forEach((item) => {
     }) + " Uhr";
 
   if (deadline == "Invalid Date") deadline = date;
+  
+  //finsih and unfinish
   let finishLi = [];
   let finsihDateLi = [];
   let finishedClass = "";
   let finishedIcon = [];
   if (item.finished) {
     finishedIcon.push(/*html*/ `
-      <i class="fa-regular fa-square-check"></i>
+    <i>✅</i>
     `);
     finishedClass = "finished";
     finishLi.push(/*html*/ `
@@ -63,23 +66,23 @@ records.forEach((item) => {
     <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note as unfinished">Not Finished</button></li>
     `);
     finsihDateLi.push(/*html*/ `
-    <p id="noteDeadline"><span id="deadlinePrefix" data-tooltip="The date you finished your TODO">Finished: </span> ${finishedDate}</p>
-    <p id="noteDate"><span id="datePrefix" data-tooltip="The date you created your TODO">Created: </span>${date}</p>
+    <p id="noteDeadline"><span id="deadlinePrefix">Finished: </span> ${finishedDate}</p>
+    <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
     `);
   } else {
     finishedIcon.push(/*html*/ `
-      <i class="fa-regular fa-clipboard"></i>
+      <i>📋</i>
     `);
     finishedClass = "notFinished";
     finishLi.push(/*html*/ `
     <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">Finish</button></li>
     `);
     finsihDateLi.push(/*html*/ `
-    <p id="noteDeadline"><span id="deadlinePrefix" data-tooltip="The date you want finished your TODO.">Deadline: </span> ${deadline}</p>
-    <p id="noteDate"><span id="datePrefix" data-tooltip="The date you created your TODO">Created: </span>${date}</p>
+    <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
+    <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
     `);
   }
-
+  //push the modal dialog to list
   list.push(/*html*/ `
         <dialog id="${item.id}">
         <article>
@@ -89,13 +92,14 @@ records.forEach((item) => {
           <form id=${item.id} class="updateNote" action=""> 
             <input type="text" class="form-control" value="${item.title}" placeholder="Title..." id="newNoteTitle" maxlength="20" name="newNoteTitle">
             <input type="text" class="form-control" value="${item.text}" placeholder="Text..." id="newNoteText" name="newNoteText">
-            <input type="datetime-local"  class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline">
+            <input type="date"  class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline">
             <button type="submit" data-tooltip="Update the note" id="${item.id}">Update</button>
           </form>
         </article>
       </dialog>
       `);
   switch (item.created === item.updated) {
+    //push the rest of the note page with buttons usw to the list
     case true:
       list.push(/*html*/ `
                <article class="noteList " id="${item.id}">
@@ -157,7 +161,7 @@ records.forEach((item) => {
       break;
   }
 });
-
+//the create button and Heading
 document.querySelector("#app").innerHTML = /*html*/ `
       
       <div>

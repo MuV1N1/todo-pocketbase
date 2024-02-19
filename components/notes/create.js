@@ -24,7 +24,6 @@ async function create(title, note, date) {
   };
   
   await pb.collection("notes").create(data);
-  setTimeout(e =>{
-    location.reload(true);
-  }),3000000;
+  location.reload(false);
+
 }
