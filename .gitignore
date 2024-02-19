@@ -27,3 +27,5 @@ pocketbase/pb_data/data.db-wal
 pocketbase/pb_data/data.db-shm
 pocketbase/pb_data/logs.db-shm
 pocketbase/pb_data/logs.db-wal
+pocketbase/pb_data/data.db
+pocketbase/pb_data/logs.db
