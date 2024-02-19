@@ -2,22 +2,22 @@ import PocketBase from "pocketbase";
 
 const pb = new PocketBase("http://localhost:8090/");
 
-export async function finishNote(element) {
+export async function unfreezeNote(element) {
   element.forEach((element) => {
-    finish(element);
+    unfreeze(element);
   });
 }
 
-function finish(element) {
+function unfreeze(element) {
   element.addEventListener("click", async (e) => {
     e.preventDefault();
     const id = element.id;
-    const date = new Date();
     const data = {
-      finished: true,
-      finishedDate: date,
+      finished: false,
+      freezeDate: NaN,
       freeze: false,
     };
+
     await pb.collection("notes").update(id, data);
     location.reload(false);
 

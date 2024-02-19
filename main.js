@@ -48,40 +48,112 @@ records.forEach((item) => {
       month: "short",
       year: "numeric",
     }) + " Uhr";
-
+const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
+    timeZone: "Europe/Berlin",
+    weekday: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }) + " Uhr";
+  if (item.deadline == "Invalid Date") {
+    deadline = "No Deadline";
+}
   if (deadline == "Invalid Date") deadline = date;
   
-  //finsih and unfinish
-  let finishLi = [];
-  let finsihDateLi = [];
-  let finishedClass = "";
-  let finishedIcon = [];
-  if (item.finished) {
-    finishedIcon.push(/*html*/ `
+  //rerange the whole thing
+
+  let icons = [];
+  let footer = [];
+  let header = [];
+  let prefix = "";
+  
+  if(item.finished && item.freeze) return;
+  if(item.finished){
+    prefix = "finished";
+    icons.push(/*html*/`
     <i>✅</i>
     `);
-    finishedClass = "finished";
-    finishLi.push(/*html*/ `
+    header.push(/*html*/`
     <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">Delete</button></li>
     <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note as unfinished">Not Finished</button></li>
     `);
-    finsihDateLi.push(/*html*/ `
+    footer.push(/*html*/`
     <p id="noteDeadline"><span id="deadlinePrefix">Finished: </span> ${finishedDate}</p>
     <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
     `);
-  } else {
-    finishedIcon.push(/*html*/ `
-      <i>📋</i>
+  }else if(!item.finished){
+    icons.push(/*html*/`
+    <i>📋</i>
     `);
-    finishedClass = "notFinished";
-    finishLi.push(/*html*/ `
+    header.push(/*html*/`
     <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">Finish</button></li>
+    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed">Freeze</button></li>
     `);
-    finsihDateLi.push(/*html*/ `
+    footer.push(/*html*/`
+    <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
+    <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+    `);
+  }else if(item.freeze){
+    prefix = "freeze";
+    icons.push(/*html*/`
+    <i>🔒</i>
+    `);
+    header.push(/*html*/`
+    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">Delete</button></li>
+    <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note not as finished">Un freeze</button></li>
+    `);
+    footer.push(/*html*/`
+    <p id="noteDeadline"><span id="deadlinePrefix">Freezed: </span> ${freezeDate}</p>
+    <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+    `);
+  }else if(!item.freeze){
+    icons.push(/*html*/`
+    <i>📋</i>
+    `);
+    header.push(/*html*/`
+    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">Finish</button></li>
+    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed">Freeze</button></li>
+    `);
+    footer.push(/*html*/`
     <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
     <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
     `);
   }
+
+
+  //finsih and unfinish
+  // let finishLi = [];
+  // let finsihDateLi = [];
+
+  // let finishedIcon = [];
+  // if (item.finished) {
+  //   finishedIcon.push(/*html*/ `
+  //   <i>✅</i>
+  //   `);
+  //   prefix = "finished";
+  //   finishLi.push(/*html*/ `
+  //   <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">Delete</button></li>
+  //   <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note as unfinished">Not Finished</button></li>
+  //   `);
+  //   finsihDateLi.push(/*html*/ `
+  //   <p id="noteDeadline"><span id="deadlinePrefix">Finished: </span> ${finishedDate}</p>
+  //   <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+  //   `);
+  // } else {
+  //   finishedIcon.push(/*html*/ `
+  //     <i>📋</i>
+  //   `);
+  //   prefix = "notFinished";
+  //   finishLi.push(/*html*/ `
+  //   <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">Finish</button></li>
+  //   `);
+  //   finsihDateLi.push(/*html*/ `
+  //   <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
+  //   <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+  //   `);
+  // }
   //push the modal dialog to list
   list.push(/*html*/ `
         <dialog id="${item.id}">
@@ -105,7 +177,7 @@ records.forEach((item) => {
                <article class="noteList " id="${item.id}">
                 <header class="noteListHeader">
                   <ul class="delete">
-                    ${finishLi}
+                    ${header}
                   <li>
                     <button class="updateModalButton" id="${
                       item.id
@@ -114,16 +186,16 @@ records.forEach((item) => {
       }" type="button" data-tooltip="Update the note">Update
                   </li>
                   </ul>
-                  ${finishedIcon}
+                  ${icons}
                   <h5 class="noteHeader" id="${item.id}">${item.title}</h5>
                 </header>
               <body>
-              <p class="${finishedClass}" id="noteText ${item.id}">${
+              <p class="${prefix}" id="noteText ${item.id}">${
         item.text
       }</p>
               </body>
               <footer>
-                ${finsihDateLi}
+                ${footer}
               </footer>
               <!--${JSON.stringify(item)}-->
             </article>
@@ -135,7 +207,7 @@ records.forEach((item) => {
               <header class="noteListHeader">
               <ul class="delete">
                   <li>
-                    ${finishLi}
+                    ${header}
                   </li>
                   <li>
                   <button class="updateModalButton" data-target="${
@@ -143,17 +215,17 @@ records.forEach((item) => {
                   }" type="button" data-tooltip="Update the note">Update
                 </li>
                   </ul>
-                  ${finishedIcon}
+                  ${icons}
                 <h5 class="noteHeader" id="${item.id}-title">${item.title}</h5>
                 
               </header>
               <body>
-              <p class="${finishedClass}" id="noteText ${item.id}-text">${
+              <p class="${prefix}" id="noteText ${item.id}-text">${
         item.text
       }</p>
               </body>
               <footer>
-                ${finsihDateLi}
+                ${footer}
               </footer>
               <!--${JSON.stringify(item)}-->
             </article>
@@ -181,7 +253,7 @@ document.querySelector("#app").innerHTML = /*html*/ `
               <h3>Create new note</h3>
             </header>
             <form id="newNote" action="">
-              <input type="text" class="form-control" placeholder="Title (max 20 chars)" id="noteTitle" name="noteTitle" maxlength="20" required>
+              <input type="text" class="form-control" placeholder="Title..." id="noteTitle" name="noteTitle" maxlength="20" title="Max. 20 Chars" required>
               <input type="text" class="form-control" placeholder="Note..." id="noteText" name="noteText" required>
               <input type="date" class="form-control" id="noteDeadline" name="noteDeadline">
               <button type="submit" id="create" data-tooltip="Create a note">Create</button>

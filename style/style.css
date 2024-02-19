@@ -82,7 +82,7 @@ body {
 }
 
 .noteList #noteText{
-  line-height: 1.2;
+  font-size: large;
   font-weight:500;
   font-size: normal;
   text-align: center;
@@ -153,6 +153,10 @@ body {
 
 .finished{
   color: #000;
-  vertical-align: middle + 2px;
-  text-decoration:line-through rgba(0, 255, 0, 0.459) 100%;
+  width: auto;
+  text-decoration: line-through;
+  text-decoration-color: rgba(0, 255, 0, 0.459);
+  text-decoration-thickness: 100%;
+  text-decoration-skip-ink: auto;
+  text-underline-offset: 1.25em;
 }

@@ -14,7 +14,8 @@ function unfinish(element) {
     const id = element.id;
     const data = {
       finished: false,
-      finishedDate: NaN
+      finishedDate: NaN,
+      finished: false,
     };
 
     await pb.collection("notes").update(id, data);

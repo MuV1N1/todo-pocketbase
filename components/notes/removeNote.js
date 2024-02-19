@@ -13,10 +13,7 @@ export function removeNote(element) {
       e.preventDefault();
       deleteNote(element.id);
     } else {
-      setTimeout((e) => {
         location.reload(false);
-      }),
-        3000000;
     }
   });
 }

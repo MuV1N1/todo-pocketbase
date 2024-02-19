@@ -20,7 +20,8 @@ async function create(title, note, date) {
     title: title,
     text: note,
     deadline: date,
-    finished: false
+    finished: false,
+    freeze: false,
   };
   
   await pb.collection("notes").create(data);

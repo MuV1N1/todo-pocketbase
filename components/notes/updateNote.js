@@ -23,7 +23,8 @@ function note(element) {
           title: title,
           text: text,
           deadline: deadline,
-          finished: false
+          finished: false,
+          freeze: false
         };
         
 
