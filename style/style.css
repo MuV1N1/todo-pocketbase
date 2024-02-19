@@ -155,3 +155,7 @@ body {
   color: red; 
   white-space: 50px;
 }
+.finished{
+  vertical-align: middle + 2px;
+  text-decoration:line-through red 3px;
+}

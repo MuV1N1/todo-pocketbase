@@ -14,8 +14,6 @@ const pb = new PocketBase("http://localhost:8090/");
 //get the records
 
 const records = await pb.collection("notes").getFullList({
-  sort: "-created",
-  sort: "deadline",
   sort: "finished",
 });
 
@@ -61,8 +59,8 @@ records.forEach((item) => {
     `);
     finishedClass = "finished";
     finishLi.push(/*html*/ `
-    <li><button id ="${item.id}" class="deleteButton" type="button">Löschen</button></li>
-    <li><button id ="${item.id}" class="unfinishButton" type="button">Nicht beendet</button></li>
+    <li><button id ="${item.id}" class="deleteButton" type="button">Delete</button></li>
+    <li><button id ="${item.id}" class="unfinishButton" type="button">Not Finished</button></li>
     `);
     finsihDateLi.push(/*html*/ `
     <p id="noteDeadline"><span id="deadlinePrefix">Finished: </span> ${finishedDate}</p>
@@ -91,7 +89,7 @@ records.forEach((item) => {
           <form id=${item.id} class="updateNote" action=""> 
             <input type="text" class="form-control" value="${item.title}" placeholder="Title..." id="newNoteTitle" name="newNoteTitle">
             <input type="text" class="form-control" value="${item.text}" placeholder="Text..." id="newNoteText" name="newNoteText">
-            <input type="date"  class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline">
+            <input type="datetime-local"  class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline">
             <button type="submit" id="${item.id}">Update</button>
           </form>
         </article>
@@ -100,7 +98,7 @@ records.forEach((item) => {
   switch (item.created === item.updated) {
     case true:
       list.push(/*html*/ `
-               <article class="noteList ${finishedClass}" id="${item.id}">
+               <article class="noteList " id="${item.id}">
                 <header class="noteListHeader">
                   <ul class="delete">
                     ${finishLi}
@@ -111,10 +109,10 @@ records.forEach((item) => {
                   </li>
                   </ul>
                   ${finishedIcon}
-                  <h5 class="noteHeader" id="${item.id}">${item.title}</h5>
+                  <h5 class="noteHeader ${finishedClass}" id="${item.id}">${item.title}</h5>
                 </header>
               <body>
-              <p id="noteText" id="${item.id}">${item.text}</p>
+              <p class="${finishedClass}" id="noteText ${item.id}">${item.text}</p>
               </body>
               <footer>
                 ${finsihDateLi}
@@ -138,11 +136,11 @@ records.forEach((item) => {
                 </li>
                   </ul>
                   ${finishedIcon}
-                <h5 class="noteHeader" id="${item.id}-title">${item.title}</h5>
+                <h5 class="noteHeader ${finishedClass}" id="${item.id}-title">${item.title}</h5>
                 
               </header>
               <body>
-              <p id="noteText" id="${item.id}-text">${item.text}</p>
+              <p class="${finishedClass}" id="noteText ${item.id}-text">${item.text}</p>
               </body>
               <footer>
                 ${finsihDateLi}
@@ -175,7 +173,7 @@ document.querySelector("#app").innerHTML = /*html*/ `
             <form id="newNote" action="">
               <input type="text" class="form-control" placeholder="Title..." id="noteTitle" name="noteTitle" required>
               <input type="text" class="form-control" placeholder="Note..." id="noteText" name="noteText" required>
-              <input type="date" class="form-control" id="noteDeadline" name="noteDeadline">
+              <input type="datetime-local" class="form-control" id="noteDeadline" name="noteDeadline">
               <button type="submit" id="create">Create</button>
             </form>
           </article>
