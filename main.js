@@ -59,12 +59,12 @@ records.forEach((item) => {
     `);
     finishedClass = "finished";
     finishLi.push(/*html*/ `
-    <li><button id ="${item.id}" class="deleteButton" type="button">Delete</button></li>
-    <li><button id ="${item.id}" class="unfinishButton" type="button">Not Finished</button></li>
+    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">Delete</button></li>
+    <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note as unfinished">Not Finished</button></li>
     `);
     finsihDateLi.push(/*html*/ `
-    <p id="noteDeadline"><span id="deadlinePrefix">Finished: </span> ${finishedDate}</p>
-    <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+    <p id="noteDeadline"><span id="deadlinePrefix" data-tooltip="The date you finished your TODO">Finished: </span> ${finishedDate}</p>
+    <p id="noteDate"><span id="datePrefix" data-tooltip="The date you created your TODO">Created: </span>${date}</p>
     `);
   } else {
     finishedIcon.push(/*html*/ `
@@ -72,11 +72,11 @@ records.forEach((item) => {
     `);
     finishedClass = "notFinished";
     finishLi.push(/*html*/ `
-    <li><button id ="${item.id}" class="finishButton" type="button">Finish</button></li>
+    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">Finish</button></li>
     `);
     finsihDateLi.push(/*html*/ `
-    <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
-    <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+    <p id="noteDeadline"><span id="deadlinePrefix" data-tooltip="The date you want finished your TODO.">Deadline: </span> ${deadline}</p>
+    <p id="noteDate"><span id="datePrefix" data-tooltip="The date you created your TODO">Created: </span>${date}</p>
     `);
   }
 
@@ -87,10 +87,10 @@ records.forEach((item) => {
             <h3>Update</h3>
           </header>
           <form id=${item.id} class="updateNote" action=""> 
-            <input type="text" class="form-control" value="${item.title}" placeholder="Title..." id="newNoteTitle" name="newNoteTitle">
+            <input type="text" class="form-control" value="${item.title}" placeholder="Title..." id="newNoteTitle" maxlength="20" name="newNoteTitle">
             <input type="text" class="form-control" value="${item.text}" placeholder="Text..." id="newNoteText" name="newNoteText">
             <input type="datetime-local"  class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline">
-            <button type="submit" id="${item.id}">Update</button>
+            <button type="submit" data-tooltip="Update the note" id="${item.id}">Update</button>
           </form>
         </article>
       </dialog>
@@ -105,14 +105,18 @@ records.forEach((item) => {
                   <li>
                     <button class="updateModalButton" id="${
                       item.id
-                    }" data-target="${item.id}" type="button">Update
+                    }" data-target="${
+        item.id
+      }" type="button" data-tooltip="Update the note">Update
                   </li>
                   </ul>
                   ${finishedIcon}
                   <h5 class="noteHeader" id="${item.id}">${item.title}</h5>
                 </header>
               <body>
-              <p class="${finishedClass}" id="noteText ${item.id}">${item.text}</p>
+              <p class="${finishedClass}" id="noteText ${item.id}">${
+        item.text
+      }</p>
               </body>
               <footer>
                 ${finsihDateLi}
@@ -132,7 +136,7 @@ records.forEach((item) => {
                   <li>
                   <button class="updateModalButton" data-target="${
                     item.id
-                  }" type="button" >Update
+                  }" type="button" data-tooltip="Update the note">Update
                 </li>
                   </ul>
                   ${finishedIcon}
@@ -140,7 +144,9 @@ records.forEach((item) => {
                 
               </header>
               <body>
-              <p class="${finishedClass}" id="noteText ${item.id}-text">${item.text}</p>
+              <p class="${finishedClass}" id="noteText ${item.id}-text">${
+        item.text
+      }</p>
               </body>
               <footer>
                 ${finsihDateLi}
@@ -157,7 +163,7 @@ document.querySelector("#app").innerHTML = /*html*/ `
       <div>
         <section id="create">
             <h2>Note</h2>
-            <button id ="createModalButton" data-target="createModal" type="button">
+            <button id ="createModalButton" data-target="createModal" type="button" data-tooltip="Create a new note">
             <i class="fa-solid fa-plus" id="plusFA"></i>
             </button>
          </section>
@@ -171,10 +177,10 @@ document.querySelector("#app").innerHTML = /*html*/ `
               <h3>Create new note</h3>
             </header>
             <form id="newNote" action="">
-              <input type="text" class="form-control" placeholder="Title..." id="noteTitle" name="noteTitle" required>
+              <input type="text" class="form-control" placeholder="Title (max 20 chars)" id="noteTitle" name="noteTitle" maxlength="20" required>
               <input type="text" class="form-control" placeholder="Note..." id="noteText" name="noteText" required>
-              <input type="datetime-local" class="form-control" id="noteDeadline" name="noteDeadline">
-              <button type="submit" id="create">Create</button>
+              <input type="date" class="form-control" id="noteDeadline" name="noteDeadline">
+              <button type="submit" id="create" data-tooltip="Create a note">Create</button>
             </form>
           </article>
         </dialog>
