@@ -8,14 +8,19 @@ import { updateNote } from "./components/notes/updateNote.js";
 import { finishNote } from "./components/notes/finishNote.js";
 import { unfinishNote } from "./components/notes/unfinishNote.js";
 
+//Connect to PocketBase
 const pb = new PocketBase("http://localhost:8090/");
-let list = [];
+
+//get the records
+
 const records = await pb.collection("notes").getFullList({
   sort: "-created",
   sort: "deadline",
   sort: "finished",
 });
-// console.log(records)
+
+let list = [];
+
 records.forEach((item) => {
   const date =
     new Date(item.created).toLocaleString("de-DE", {
@@ -56,8 +61,8 @@ records.forEach((item) => {
     `);
     finishedClass = "finished";
     finishLi.push(/*html*/ `
-    <li><button id ="${item.id}" class="deleteButton" type="button">Delete</button></li>
-    <li><button id ="${item.id}" class="unfinishButton" type="button">Unfinish</button></li>
+    <li><button id ="${item.id}" class="deleteButton" type="button">Löschen</button></li>
+    <li><button id ="${item.id}" class="unfinishButton" type="button">Nicht beendet</button></li>
     `);
     finsihDateLi.push(/*html*/ `
     <p id="noteDeadline"><span id="deadlinePrefix">Finished: </span> ${finishedDate}</p>

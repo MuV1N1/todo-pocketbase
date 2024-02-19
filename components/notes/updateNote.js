@@ -22,7 +22,8 @@ function note(element) {
         const data = {
           title: title,
           text: text,
-          deadline: deadline
+          deadline: deadline,
+          finished: false
         };
         
 
