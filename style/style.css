@@ -41,6 +41,10 @@ body {
   margin-right: auto;
   z-index: 0;
 }
+::selection {
+  color: #000;
+  background: rgba(0, 195, 255, 0.144);
+}
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

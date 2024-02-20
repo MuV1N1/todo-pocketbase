@@ -121,7 +121,7 @@ records.forEach((item) => {
     <i class="fa-solid fa-square-check"></i>
     `);
     header.push(/*html*/ `
-    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">✖️</button></li>
+    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note"><i class="fa-solid fa-x"></i></button></li>
     <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note as unfinished"><i class="fa-solid fa-hourglass-start"></i></button></li>
     `);
     footer.push(/*html*/ `
@@ -133,8 +133,8 @@ records.forEach((item) => {
     <i class="fa-solid fa-hourglass-start"></i>
     `);
     header.push(/*html*/ `
-    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">🏆</button></li>
-    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed">❄️</button></li>
+    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished"><i class="fa-solid fa-trophy"></i></button></li>
+    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed"><i class="fa-solid fa-snowflake"></i></button></li>
     `);
     footer.push(/*html*/ `
     <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
@@ -146,7 +146,7 @@ records.forEach((item) => {
     <i>🔒</i>
     `);
     header.push(/*html*/ `
-    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">✖️</button></li>
+    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note"><i class="fa-solid fa-x"></i></button></li>
     <li><button id ="${item.id}" class="unfreezeButton" type="button" data-tooltip="Mark the note as not freezed">🔙</button></li>
     `);
     footer.push(/*html*/ `
@@ -158,8 +158,8 @@ records.forEach((item) => {
     <i class="fa-solid fa-hourglass-start"></i>
     `);
     header.push(/*html*/ `
-    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">🏆</button></li>
-    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed">❄️</button></li>
+    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished"><i class="fa-solid fa-trophy"></i></button></li>
+    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed"><i class="fa-solid fa-snowflake"></i></button></li>
     `);
     footer.push(/*html*/ `
     <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
@@ -177,7 +177,7 @@ records.forEach((item) => {
             <input type="text" class="form-control" value="${item.title}" placeholder="Title..." id="newNoteTitle" maxlength="20" name="newNoteTitle">
             <input type="text" class="form-control" value="${item.text}" placeholder="Text..." id="newNoteText" name="newNoteText">
             <input type="date"  class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline">
-            <button type="submit" data-tooltip="Update the note" id="${item.id}">🔄</button>
+            <button type="submit" data-tooltip="Update the note" id="${item.id}"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>
           </form>
         </article>
       </dialog>
@@ -191,7 +191,7 @@ records.forEach((item) => {
               <option selected disabled value="">${selectedName}</option>
               ${listNoteLi}
             </select>
-            <button type="submit" data-tooltip="Update the note list" id="${item.id}">🔄</button>
+            <button type="submit" data-tooltip="Update the note list" id="${item.id}"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>
           </form>
         </article>
       </dialog>
@@ -214,7 +214,7 @@ records.forEach((item) => {
                   <li>
                   <button class="cahngeListModalButton" data-target="${
                     item.id
-                  }-" type="button" data-tooltip="Change the current List of he modal"><i class="fa-solid fa-retweet"></i>
+                  }-" type="button" data-tooltip="Change the current List of he modal"><i class="fa-solid fa-arrow-right-arrow-left"></i>
                 </li>
                   </ul>
                   ${icons}
