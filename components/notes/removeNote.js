@@ -7,13 +7,13 @@ export function removeNote(element) {
       confirm(
         "Are you sure?\
         \nWhen you DELETE this note you have NO chance to get it back!\
-        \nBe Realy sure if you want to delete it!"
+        \nBe realy sure if you want to delete it!"
       )
     ) {
       e.preventDefault();
       deleteNote(element.id);
     } else {
-        location.reload(false);
+      return;
     }
   });
 }

@@ -125,38 +125,7 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
   }
 
 
-  //finsih and unfinish
-  // let finishLi = [];
-  // let finsihDateLi = [];
 
-  // let finishedIcon = [];
-  // if (item.finished) {
-  //   finishedIcon.push(/*html*/ `
-  //   <i>✅</i>
-  //   `);
-  //   prefix = "finished";
-  //   finishLi.push(/*html*/ `
-  //   <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">Delete</button></li>
-  //   <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note as unfinished">Not Finished</button></li>
-  //   `);
-  //   finsihDateLi.push(/*html*/ `
-  //   <p id="noteDeadline"><span id="deadlinePrefix">Finished: </span> ${finishedDate}</p>
-  //   <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
-  //   `);
-  // } else {
-  //   finishedIcon.push(/*html*/ `
-  //     <i>📋</i>
-  //   `);
-  //   prefix = "notFinished";
-  //   finishLi.push(/*html*/ `
-  //   <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">Finish</button></li>
-  //   `);
-  //   finsihDateLi.push(/*html*/ `
-  //   <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
-  //   <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
-  //   `);
-  // }
-  //push the modal dialog to list
   list.push(/*html*/ `
         <dialog id="${item.id}">
         <article>

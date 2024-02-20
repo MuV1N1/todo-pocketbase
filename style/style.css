@@ -67,19 +67,26 @@ body {
 .noteList h5{
   margin: 1px;
   padding: 5px;
+  z-index: 2;
 }
 .noteList .noteListHeader ul{
   display: inline-block;
   top: 15%;
   right: 1%;
   position: absolute;
+  z-index: 0;
 }
 .noteList .noteListHeader ul li{
   list-style-type: none;
   display: inline-block;
   list-style-type: none;
-}
+  height:auto;
+  width:auto;
 
+}
+.noteList body{
+  height: auto;
+}
 .noteList #noteText{
   font-size: large;
   font-weight:500;
