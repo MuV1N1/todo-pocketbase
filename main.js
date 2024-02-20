@@ -7,6 +7,8 @@ import { removeNote } from "./components/notes/removeNote.js";
 import { updateNote } from "./components/notes/updateNote.js";
 import { finishNote } from "./components/notes/finishNote.js";
 import { unfinishNote } from "./components/notes/unfinishNote.js";
+import { freezeNote } from "./components/notes/freeze.js";
+import { unfreezeNote } from "./components/notes/unfreezeNote.js";
 
 //Connect to PocketBase
 const pb = new PocketBase("http://localhost:8090/");
@@ -14,7 +16,7 @@ const pb = new PocketBase("http://localhost:8090/");
 //get the records
 
 const records = await pb.collection("notes").getFullList({
-  sort: "finished",
+  sort: "sortBottom",
 });
 
 let list = [];
@@ -70,51 +72,51 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
   let prefix = "";
   
   if(item.finished && item.freeze) return;
-  if(item.finished){
+  if(item.finished && !item.freeze){
     prefix = "finished";
     icons.push(/*html*/`
     <i>✅</i>
     `);
     header.push(/*html*/`
-    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">Delete</button></li>
-    <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note as unfinished">Not Finished</button></li>
+    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">✖️</button></li>
+    <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note as unfinished">⏳</button></li>
     `);
     footer.push(/*html*/`
     <p id="noteDeadline"><span id="deadlinePrefix">Finished: </span> ${finishedDate}</p>
     <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
     `);
-  }else if(!item.finished){
+  }else if(!item.finished && !item.freeze){
     icons.push(/*html*/`
-    <i>📋</i>
+    <i>⏳</i>
     `);
     header.push(/*html*/`
-    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">Finish</button></li>
-    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed">Freeze</button></li>
+    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">🏆</button></li>
+    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed">❄️</button></li>
     `);
     footer.push(/*html*/`
     <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
     <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
     `);
-  }else if(item.freeze){
+  }else if(item.freeze && !item.finished){
     prefix = "freeze";
     icons.push(/*html*/`
     <i>🔒</i>
     `);
     header.push(/*html*/`
-    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">Delete</button></li>
-    <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note not as finished">Un freeze</button></li>
+    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">✖️</button></li>
+    <li><button id ="${item.id}" class="unfreezeButton" type="button" data-tooltip="Mark the note as not freezed">🔙</button></li>
     `);
     footer.push(/*html*/`
     <p id="noteDeadline"><span id="deadlinePrefix">Freezed: </span> ${freezeDate}</p>
     <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
     `);
-  }else if(!item.freeze){
+  }else if(!item.freeze && !item.finished){
     icons.push(/*html*/`
-    <i>📋</i>
+    <i>⏳</i>
     `);
     header.push(/*html*/`
-    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">Finish</button></li>
-    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed">Freeze</button></li>
+    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">🏆</button></li>
+    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed">❄️</button></li>
     `);
     footer.push(/*html*/`
     <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
@@ -165,7 +167,7 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
             <input type="text" class="form-control" value="${item.title}" placeholder="Title..." id="newNoteTitle" maxlength="20" name="newNoteTitle">
             <input type="text" class="form-control" value="${item.text}" placeholder="Text..." id="newNoteText" name="newNoteText">
             <input type="date"  class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline">
-            <button type="submit" data-tooltip="Update the note" id="${item.id}">Update</button>
+            <button type="submit" data-tooltip="Update the note" id="${item.id}">🔄</button>
           </form>
         </article>
       </dialog>
@@ -183,7 +185,7 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
                       item.id
                     }" data-target="${
         item.id
-      }" type="button" data-tooltip="Update the note">Update
+      }" type="button" data-tooltip="Update the note">🔄
                   </li>
                   </ul>
                   ${icons}
@@ -212,7 +214,7 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
                   <li>
                   <button class="updateModalButton" data-target="${
                     item.id
-                  }" type="button" data-tooltip="Update the note">Update
+                  }" type="button" data-tooltip="Update the note">🔄
                 </li>
                   </ul>
                   ${icons}
@@ -269,6 +271,8 @@ modal(document.querySelector("#createModalButton"));
 document.querySelectorAll(".updateModalButton").forEach((element) => {
   modal(element);
 });
+freezeNote(document.querySelectorAll(".freezeButton"));
+unfreezeNote(document.querySelectorAll(".unfreezeButton"));
 finishNote(document.querySelectorAll(".finishButton"));
 unfinishNote(document.querySelectorAll(".unfinishButton"));
 document.querySelectorAll(".deleteButton").forEach((element) => {

@@ -24,7 +24,8 @@ function note(element) {
           text: text,
           deadline: deadline,
           finished: false,
-          freeze: false
+          freeze: false,
+          sortBottom: false,
         };
         
 

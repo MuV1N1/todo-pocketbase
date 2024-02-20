@@ -17,6 +17,7 @@ function finish(element) {
       finished: true,
       finishedDate: date,
       freeze: false,
+      sortBottom: true,
     };
     await pb.collection("notes").update(id, data);
     location.reload(false);

@@ -10,6 +10,7 @@ export async function freezeNote(element) {
 
 function freeze(element) {
   element.addEventListener("click", async (e) => {
+    console.log("freeze")
     e.preventDefault();
     const id = element.id;
     const date = new Date();
@@ -17,6 +18,7 @@ function freeze(element) {
       finished: false,
       freezeDate: date,
       freeze: true,
+      sortBottom: true,
     };
     await pb.collection("notes").update(id, data);
     location.reload(false);

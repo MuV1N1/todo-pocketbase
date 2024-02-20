@@ -46,7 +46,6 @@ body {
     background-color: #ffffff;
   }
 }
-
 #modal-example > article > header > h3{
   text-align: center;
   margin-bottom: 0px;
@@ -159,4 +158,20 @@ body {
   text-decoration-thickness: 100%;
   text-decoration-skip-ink: auto;
   text-underline-offset: 1.25em;
+}
+.deleteButton{
+  background-color: #ff0000;
+  border: 1px solid #ff0000;
+}
+.finishButton{
+  background-color: #4fd84f;
+  border: 1px solid #4fd84f;
+}
+.unfinishButton{
+  background-color: #ae00ff;
+  border: 1px solid #ae00ff;
+}
+.unfreezeButton{
+  background-color: #dfeb35;
+  border: 1px solid #dfeb35;
 }
