@@ -18,7 +18,7 @@ function note(element) {
         const title = formData.get("newNoteTitle");
         const text = formData.get("newNoteText");
         const deadline = formData.get("newNoteDeadline");
-
+        
         const data = {
           title: title,
           text: text,
@@ -27,7 +27,7 @@ function note(element) {
           freeze: false,
           sortBottom: false,
         };
-        
+        console.log(data)
 
         await pb.collection('notes').update(id, data);
           location.reload(false);

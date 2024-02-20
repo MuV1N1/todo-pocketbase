@@ -17,7 +17,7 @@ const pb = new PocketBase("http://localhost:8090/");
 //get the records
 
 let urlParams = new URLSearchParams(window.location.search);
-let selectedValue = urlParams.get('selectedValue');
+let selectedValue = urlParams.get("selectedValue");
 let selectedName = null;
 const recordsUf = await pb.collection("notes").getFullList({
   sort: "sortBottom",
@@ -25,17 +25,16 @@ const recordsUf = await pb.collection("notes").getFullList({
 const noteLists = await pb.collection("list").getFullList({
   sort: "created",
 });
-if(selectedValue !== null ){
-const currentList = await pb.collection('list').getOne(selectedValue, {});
-selectedName = currentList.name;
+if (selectedValue !== null) {
+  const currentList = await pb.collection("list").getOne(selectedValue, {});
+  selectedName = currentList.name;
 }
-let records = recordsUf.filter(item => item.list === selectedValue);
+let records = recordsUf.filter((item) => item.list === selectedValue);
 let list = [];
 let listNoteLi = [];
 
 noteLists.forEach((item) => {
-
-listNoteLi.push(/*html*/ `
+  listNoteLi.push(/*html*/ `
 <option value="${item.id}">${item.name}</option>
 `);
 });
@@ -69,29 +68,31 @@ records.forEach((item) => {
       month: "short",
       year: "numeric",
     }) + " Uhr";
-const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
-    timeZone: "Europe/Berlin",
-    weekday: "long",
-    hour: "2-digit",
-    minute: "2-digit",
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  }) + " Uhr";
-const updatedDate = new Date(item.updated).toLocaleString("de-DE", {
-  timeZone: "Europe/Berlin",
-  weekday: "long",
-  hour: "2-digit",
-  minute: "2-digit",
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-}) + " Uhr";
+  const freezeDate =
+    new Date(item.freezeDate).toLocaleString("de-DE", {
+      timeZone: "Europe/Berlin",
+      weekday: "long",
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }) + " Uhr";
+  const updatedDate =
+    new Date(item.updated).toLocaleString("de-DE", {
+      timeZone: "Europe/Berlin",
+      weekday: "long",
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }) + " Uhr";
   if (item.deadline == "Invalid Date") {
     deadline = "No Deadline";
-}
+  }
   if (deadline == "Invalid Date") deadline = date;
-  
+
   //rerange the whole thing
 
   let icons = [];
@@ -99,73 +100,71 @@ const updatedDate = new Date(item.updated).toLocaleString("de-DE", {
   let header = [];
   let prefix = "";
   let createdOrUpdated = [];
-  
-  if(item.finished && item.freeze) return;
-  switch(item.created === item.updated){
+
+  if (item.finished && item.freeze) return;
+  switch (item.created === item.updated) {
     case true:
-      createdOrUpdated.push(/*html*/`
+      createdOrUpdated.push(/*html*/ `
       <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
-      `);      
+      `);
       break;
     case false:
-      createdOrUpdated.push(/*html*/`
+      createdOrUpdated.push(/*html*/ `
         <p id="noteDate"><span id="datePrefix">Updated: </span>${updatedDate}</p>
-      `)
+      `);
       break;
   }
-  if(item.finished && !item.freeze){
+  if (item.finished && !item.freeze) {
     prefix = "finished";
-    icons.push(/*html*/`
-    <i>✅</i>
+    icons.push(/*html*/ `
+    <i class="fa-solid fa-square-check"></i>
     `);
-    header.push(/*html*/`
+    header.push(/*html*/ `
     <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">✖️</button></li>
-    <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note as unfinished">⏳</button></li>
+    <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note as unfinished"><i class="fa-solid fa-hourglass-start"></i></button></li>
     `);
-    footer.push(/*html*/`
+    footer.push(/*html*/ `
     <p id="noteDeadline"><span id="deadlinePrefix">Finished: </span> ${finishedDate}</p>
     ${createdOrUpdated}
     `);
-  }else if(!item.finished && !item.freeze){
-    icons.push(/*html*/`
-    <i>⏳</i>
+  } else if (!item.finished && !item.freeze) {
+    icons.push(/*html*/ `
+    <i class="fa-solid fa-hourglass-start"></i>
     `);
-    header.push(/*html*/`
+    header.push(/*html*/ `
     <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">🏆</button></li>
     <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed">❄️</button></li>
     `);
-    footer.push(/*html*/`
+    footer.push(/*html*/ `
     <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
     ${createdOrUpdated}
     `);
-  }else if(item.freeze && !item.finished){
+  } else if (item.freeze && !item.finished) {
     prefix = "freeze";
-    icons.push(/*html*/`
+    icons.push(/*html*/ `
     <i>🔒</i>
     `);
-    header.push(/*html*/`
+    header.push(/*html*/ `
     <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">✖️</button></li>
     <li><button id ="${item.id}" class="unfreezeButton" type="button" data-tooltip="Mark the note as not freezed">🔙</button></li>
     `);
-    footer.push(/*html*/`
+    footer.push(/*html*/ `
     <p id="noteDeadline"><span id="deadlinePrefix">Freezed: </span> ${freezeDate}</p>
     ${createdOrUpdated}
     `);
-  }else if(!item.freeze && !item.finished){
-    icons.push(/*html*/`
-    <i>⏳</i>
+  } else if (!item.freeze && !item.finished) {
+    icons.push(/*html*/ `
+    <i class="fa-solid fa-hourglass-start"></i>
     `);
-    header.push(/*html*/`
+    header.push(/*html*/ `
     <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">🏆</button></li>
     <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed">❄️</button></li>
     `);
-    footer.push(/*html*/`
+    footer.push(/*html*/ `
     <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
     ${createdOrUpdated}
     `);
   }
-
-
 
   list.push(/*html*/ `
         <dialog id="${item.id}">
@@ -209,21 +208,19 @@ const updatedDate = new Date(item.updated).toLocaleString("de-DE", {
                       item.id
                     }" data-target="${
         item.id
-      }" type="button" data-tooltip="Update the note">🔄
+      }" type="button" data-tooltip="Update the note"><i class="fa-solid fa-retweet"></i>
                   </li>
                   <li>
                   <button class="cahngeListModalButton" data-target="${
                     item.id
-                  }-" type="button" data-tooltip="Change the current List of he modal">🔄
+                  }-" type="button" data-tooltip="Change the current List of he modal"><i class="fa-solid fa-retweet"></i>
                 </li>
                   </ul>
                   ${icons}
                   <h5 class="noteHeader" id="${item.id}">${item.title}</h5>
                 </header>
               <body>
-              <p class="${prefix}" id="noteText ${item.id}">${
-        item.text
-      }</p>
+              <p class="${prefix}" id="noteText ${item.id}">${item.text}</p>
               </body>
               <footer>
                 ${footer}
@@ -243,12 +240,12 @@ const updatedDate = new Date(item.updated).toLocaleString("de-DE", {
                   <li>
                   <button class="updateModalButton" data-target="${
                     item.id
-                  }" type="button" data-tooltip="Update the note">🔄
+                  }" type="button" data-tooltip="Update the note"><i class="fa-solid fa-retweet"></i>
                 </li>
                 <li>
                   <button class="cahngeListModalButton" data-target="${
                     item.id
-                  }-" type="button" data-tooltip="Change the current List of he modal">🔄
+                  }-" type="button" data-tooltip="Change the current List of he modal"><i class="fa-solid fa-arrow-right-arrow-left"></i>
                 </li>
               </ul>
                   ${icons}
@@ -270,20 +267,61 @@ const updatedDate = new Date(item.updated).toLocaleString("de-DE", {
   }
 });
 
+// let manageListModal = [];
+
+// manageListModal.push(/*html*/ `
+// <dialog id="createListModal">
+//   <article>
+//     <header>
+//       <h3>Create new list</h3>
+//     </header>
+//     <form id="newNoteList" action="">
+//       <input type="text" class="form-control" id="createListName" name="createListName" placeholder="Name...">
+//       <button type="submit" id="create" data-tooltip="Create a List">Create</button>
+//     </form>
+//   </article>
+// </dialog>
+// <dialog id="deleteListModal">
+//   <article>
+//     <header>
+//       <h3>Delete one list</h3>
+//     </header>
+//     <form id="deleteNoteList" action="">
+//       <select name="select" aria-label="Select" id="select"required>
+//       <option selected disabled value="">Select note to delete</option>
+//       ${listNoteLi}
+//       </select>
+//       <button type="submit" id="delete" data-tooltip="Delete a List">Delete</button>
+//     </form>
+//   </article>
+// </dialog>
+// <!--<dialog id="renameListModal">
+//   <article>
+//     <header>
+//       <h3>Rename</h3>
+//     </header>
+//     <form id="renameNoteList" action="">
+//       <input type="text" class="form-control" id="renameList" name="renameList" placeholder="New Name...">
+//       <button type="submit" id="create" data-tooltip="Create a List">Create</button>
+//     </form>
+//   </article>
+// </dialog>-->
+// `);
+
 //the create button and Heading
-if(selectedName == null) selectedName = "Select your list"
+if (selectedName == null) selectedName = "Select your list";
 document.querySelector("#app").innerHTML = /*html*/ `
       
       <div class="topBar">
         <section id="create">
-          <h2>Note</h2>
+          <h2>${selectedName}</h2>
           <ul id="startList">
           <li id="startItem">
-            <button id="switchList" type="button" data-target="selectListModal">${selectedName}</button>
+            <button id="switchList" type="button" data-target="selectListModal" data-tooltip="Switch between your list">${selectedName}</button>
           </li>
           <li id="startItem">
-            <button id ="createModalButton" data-target="createModal" type="button" data-tooltip="Create a new note"><i class="fa-solid fa-plus" id="plusFA"></i></button>
-          </li>          
+            <button id ="createNote" data-target="createModal" type="button" data-tooltip="Create a new note"><i class="fa-solid fa-plus" id="plusFA"></i></button>
+          </li>     
           </ul>
           
           </button>
@@ -294,7 +332,6 @@ document.querySelector("#app").innerHTML = /*html*/ `
         </div>
       </div>
       <dialog id="selectListModal">
-    
       <article>
         <header>
           <h1>Select List</h1>
@@ -307,8 +344,7 @@ document.querySelector("#app").innerHTML = /*html*/ `
           <button type="submit" class="submitButton">Submit</button>
         </form>
       </article>
-
-    </dialog>
+      </dialog>
       <dialog id="createModal">
           <article>
             <header>
@@ -321,15 +357,20 @@ document.querySelector("#app").innerHTML = /*html*/ `
               <button type="submit" id="create" data-tooltip="Create a note">Create</button>
             </form>
           </article>
-        </dialog>
-    
+        </dialog>    
     `;
-    
+
 //Note Stuff
 setupNote(document.querySelector("#newNote"), selectedValue);
 
 modal(document.querySelector("#switchList"));
-modal(document.querySelector("#createModalButton"));
+modal(document.querySelector("#createNote"));
+// modal(document.querySelector("#manageList"));
+
+// modal(document.querySelector("#createList"));
+// modal(document.querySelector("#renameList"));
+// modal(document.querySelector("#deleteList"));
+
 document.querySelectorAll(".updateModalButton").forEach((element) => {
   modal(element);
 });
@@ -346,4 +387,3 @@ document.querySelectorAll(".deleteButton").forEach((element) => {
 });
 updateNote(document.querySelectorAll(".updateNote"));
 updateNoteList(document.querySelectorAll(".updateNoteList"));
-
