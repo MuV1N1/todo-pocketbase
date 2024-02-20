@@ -16,6 +16,7 @@ const pb = new PocketBase("http://localhost:8090/");
 
 //get the records
 
+console.log("Test")
 let urlParams = new URLSearchParams(window.location.search);
 let selectedValue = urlParams.get("selectedValue");
 let selectedName = null;
