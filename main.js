@@ -9,17 +9,36 @@ import { finishNote } from "./components/notes/finishNote.js";
 import { unfinishNote } from "./components/notes/unfinishNote.js";
 import { freezeNote } from "./components/notes/freeze.js";
 import { unfreezeNote } from "./components/notes/unfreezeNote.js";
-
+import { selectList } from "./components/list/selectList.js";
+import { updateNoteList } from "./components/list/updateNoteList.js";
 //Connect to PocketBase
 const pb = new PocketBase("http://localhost:8090/");
 
 //get the records
 
-const records = await pb.collection("notes").getFullList({
+let urlParams = new URLSearchParams(window.location.search);
+let selectedValue = urlParams.get('selectedValue');
+let selectedName = null;
+const recordsUf = await pb.collection("notes").getFullList({
   sort: "sortBottom",
 });
-
+const noteLists = await pb.collection("list").getFullList({
+  sort: "created",
+});
+if(selectedValue !== null ){
+const currentList = await pb.collection('list').getOne(selectedValue, {});
+selectedName = currentList.name;
+}
+let records = recordsUf.filter(item => item.list === selectedValue);
 let list = [];
+let listNoteLi = [];
+
+noteLists.forEach((item) => {
+
+listNoteLi.push(/*html*/ `
+<option value="${item.id}">${item.name}</option>
+`);
+});
 // loop each item of records
 records.forEach((item) => {
   //declare date's
@@ -59,6 +78,15 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
     month: "short",
     year: "numeric",
   }) + " Uhr";
+const updatedDate = new Date(item.updated).toLocaleString("de-DE", {
+  timeZone: "Europe/Berlin",
+  weekday: "long",
+  hour: "2-digit",
+  minute: "2-digit",
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+}) + " Uhr";
   if (item.deadline == "Invalid Date") {
     deadline = "No Deadline";
 }
@@ -70,8 +98,21 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
   let footer = [];
   let header = [];
   let prefix = "";
+  let createdOrUpdated = [];
   
   if(item.finished && item.freeze) return;
+  switch(item.created === item.updated){
+    case true:
+      createdOrUpdated.push(/*html*/`
+      <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+      `);      
+      break;
+    case false:
+      createdOrUpdated.push(/*html*/`
+        <p id="noteDate"><span id="datePrefix">Updated: </span>${updatedDate}</p>
+      `)
+      break;
+  }
   if(item.finished && !item.freeze){
     prefix = "finished";
     icons.push(/*html*/`
@@ -83,7 +124,7 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
     `);
     footer.push(/*html*/`
     <p id="noteDeadline"><span id="deadlinePrefix">Finished: </span> ${finishedDate}</p>
-    <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+    ${createdOrUpdated}
     `);
   }else if(!item.finished && !item.freeze){
     icons.push(/*html*/`
@@ -95,7 +136,7 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
     `);
     footer.push(/*html*/`
     <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
-    <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+    ${createdOrUpdated}
     `);
   }else if(item.freeze && !item.finished){
     prefix = "freeze";
@@ -108,7 +149,7 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
     `);
     footer.push(/*html*/`
     <p id="noteDeadline"><span id="deadlinePrefix">Freezed: </span> ${freezeDate}</p>
-    <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+    ${createdOrUpdated}
     `);
   }else if(!item.freeze && !item.finished){
     icons.push(/*html*/`
@@ -120,7 +161,7 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
     `);
     footer.push(/*html*/`
     <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
-    <p id="noteDate"><span id="datePrefix">Created: </span>${date}</p>
+    ${createdOrUpdated}
     `);
   }
 
@@ -140,9 +181,23 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
           </form>
         </article>
       </dialog>
+      <dialog id="${item.id}-">
+        <article>
+          <header>
+            <h3>Update</h3>
+          </header>
+          <form id="${item.id}-" class="updateNoteList" action=""> 
+            <select name="selectNewList" aria-label="Select" id="selectNewList"required>
+              <option selected disabled value="">${selectedName}</option>
+              ${listNoteLi}
+            </select>
+            <button type="submit" data-tooltip="Update the note list" id="${item.id}">🔄</button>
+          </form>
+        </article>
+      </dialog>
       `);
   switch (item.created === item.updated) {
-    //push the rest of the note page with buttons usw to the list
+    //push the rest of the note page with buttons and so on to the list
     case true:
       list.push(/*html*/ `
                <article class="noteList " id="${item.id}">
@@ -156,6 +211,11 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
         item.id
       }" type="button" data-tooltip="Update the note">🔄
                   </li>
+                  <li>
+                  <button class="cahngeListModalButton" data-target="${
+                    item.id
+                  }-" type="button" data-tooltip="Change the current List of he modal">🔄
+                </li>
                   </ul>
                   ${icons}
                   <h5 class="noteHeader" id="${item.id}">${item.title}</h5>
@@ -185,7 +245,12 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
                     item.id
                   }" type="button" data-tooltip="Update the note">🔄
                 </li>
-                  </ul>
+                <li>
+                  <button class="cahngeListModalButton" data-target="${
+                    item.id
+                  }-" type="button" data-tooltip="Change the current List of he modal">🔄
+                </li>
+              </ul>
                   ${icons}
                 <h5 class="noteHeader" id="${item.id}-title">${item.title}</h5>
                 
@@ -204,20 +269,46 @@ const freezeDate = new Date(item.freezeDate).toLocaleString("de-DE", {
       break;
   }
 });
+
 //the create button and Heading
+if(selectedName == null) selectedName = "Select your list"
 document.querySelector("#app").innerHTML = /*html*/ `
       
-      <div>
+      <div class="topBar">
         <section id="create">
-            <h2>Note</h2>
-            <button id ="createModalButton" data-target="createModal" type="button" data-tooltip="Create a new note">
-            <i class="fa-solid fa-plus" id="plusFA"></i>
-            </button>
-         </section>
-        <div>
+          <h2>Note</h2>
+          <ul id="startList">
+          <li id="startItem">
+            <button id="switchList" type="button" data-target="selectListModal">${selectedName}</button>
+          </li>
+          <li id="startItem">
+            <button id ="createModalButton" data-target="createModal" type="button" data-tooltip="Create a new note"><i class="fa-solid fa-plus" id="plusFA"></i></button>
+          </li>          
+          </ul>
+          
+          </button>
+        </section>
+        
+      <div>
           ${list.join("")}
         </div>
       </div>
+      <dialog id="selectListModal">
+    
+      <article>
+        <header>
+          <h1>Select List</h1>
+        </header>
+        <form id="selectListForm">
+          <select name="select" aria-label="Select" id="select"required>
+            <option selected disabled value="">Select Note</option>
+            ${listNoteLi}
+          </select>
+          <button type="submit" class="submitButton">Submit</button>
+        </form>
+      </article>
+
+    </dialog>
       <dialog id="createModal">
           <article>
             <header>
@@ -233,13 +324,19 @@ document.querySelector("#app").innerHTML = /*html*/ `
         </dialog>
     
     `;
+    
 //Note Stuff
-setupNote(document.querySelector("#newNote"));
+setupNote(document.querySelector("#newNote"), selectedValue);
 
+modal(document.querySelector("#switchList"));
 modal(document.querySelector("#createModalButton"));
 document.querySelectorAll(".updateModalButton").forEach((element) => {
   modal(element);
 });
+document.querySelectorAll(".cahngeListModalButton").forEach((element) => {
+  modal(element);
+});
+selectList(document.querySelector("#selectListForm"));
 freezeNote(document.querySelectorAll(".freezeButton"));
 unfreezeNote(document.querySelectorAll(".unfreezeButton"));
 finishNote(document.querySelectorAll(".finishButton"));
@@ -248,3 +345,5 @@ document.querySelectorAll(".deleteButton").forEach((element) => {
   removeNote(element);
 });
 updateNote(document.querySelectorAll(".updateNote"));
+updateNoteList(document.querySelectorAll(".updateNoteList"));
+
