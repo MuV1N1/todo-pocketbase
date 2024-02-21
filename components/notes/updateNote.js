@@ -27,8 +27,6 @@ function note(element) {
           freeze: false,
           sortBottom: false,
         };
-        console.log(data)
-
         await pb.collection('notes').update(id, data);
           location.reload(false);
       })

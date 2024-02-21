@@ -13,7 +13,7 @@ import { selectList } from "./components/list/selectList.js";
 import { updateNoteList } from "./components/list/updateNoteList.js";
 import { setupList } from "./components/list/createList.js";
 import { removeList } from "./components/list/removeList.js";
-import { renameList } from "./components/list/renameList.js";
+import { updateList } from "./components/list/updateList.js";
 import { overDeadline } from "./components/validateDate.js";
 //Connect to PocketBase
 const pb = new PocketBase("http://localhost:8090/");
@@ -356,7 +356,7 @@ document.querySelector("#app").innerHTML = /*html*/ `
             <form id="manageListForm" action="">
               <button type="button" id="createList" data-target="createListModal" data-tooltip="Create a list">Create</button>
               <button type="button" id="deleteList" data-target="deleteListModal" data-tooltip="Delete the current list">Delete current</button>
-              <button type="button" id="renameList" data-target="renameListModal" data-tooltip="Rename the current list">Rename current</button>
+              <button type="button" id="updateList" data-target="updateListModal" data-tooltip="update the current list">update current</button>
             </form>
           </article>
         </dialog>
@@ -371,13 +371,13 @@ document.querySelector("#app").innerHTML = /*html*/ `
     </form>
 </article>
  </dialog>
- <dialog id="renameListModal">
+ <dialog id="updateListModal">
    <article>
      <header>
-      <h3>Rename</h3>
+      <h3>update</h3>
     </header>
-     <form id="renameNoteList" action="">
-      <input type="text" class="form-control" id="renameList" name="renameList" placeholder="New Name...">
+     <form id="updateNoteList" action="">
+      <input type="text" class="form-control" id="updateList" name="updateList" placeholder="New Name...">
       <button type="submit" id="create" data-tooltip="Create a List">Create</button>
     </form>
    </article>
@@ -386,34 +386,30 @@ document.querySelector("#app").innerHTML = /*html*/ `
 
       
 
-//Note Stuff
+//Modals
+let modalButtonList = ["#switchList", "#createNote", "#manageList", "#createList", "#updateList"];
+modalButtonList.forEach((element) => modal(document.querySelector(element)));
+document.querySelectorAll(".updateModalButton").forEach((element) => modal(element));
+document.querySelectorAll(".cahngeListModalButton").forEach((element) => modal(element));
+
+//Setup the notes and Lists
 setupNote(document.querySelector("#newNote"), selectedValue);
+setupList(document.querySelector("#newNoteList"));
 
+//Update the notes and lists
+updateList(document.querySelector("#updateNoteList"));
+updateNote(document.querySelectorAll(".updateNote"));
+updateNoteList(document.querySelectorAll(".updateNoteList"));
 
-modal(document.querySelector("#switchList"));
-modal(document.querySelector("#createNote"));
-modal(document.querySelector("#manageList"));
-
-modal(document.querySelector("#createList"));
-modal(document.querySelector("#renameList"));
-
-
-document.querySelectorAll(".updateModalButton").forEach((element) => {
-  modal(element);
-});
-document.querySelectorAll(".cahngeListModalButton").forEach((element) => {
-  modal(element);
-});
+//Start page
 selectList(document.querySelector("#selectListForm"));
+
+//Freeze and Finish the notes
 freezeNote(document.querySelectorAll(".freezeButton"));
 unfreezeNote(document.querySelectorAll(".unfreezeButton"));
 finishNote(document.querySelectorAll(".finishButton"));
 unfinishNote(document.querySelectorAll(".unfinishButton"));
-document.querySelectorAll(".deleteButton").forEach((element) => {
-  removeNote(element);
-});
-updateNote(document.querySelectorAll(".updateNote"));
-updateNoteList(document.querySelectorAll(".updateNoteList"));
-setupList(document.querySelector("#newNoteList"));
+
+//Remove the notes and lists
+removeNote(document.querySelectorAll(".deleteButton"))
 removeList(document.querySelector("#deleteList"));
-renameList(document.querySelector("#renameNoteList"));

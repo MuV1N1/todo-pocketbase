@@ -1,6 +1,6 @@
 import PocketBase from "pocketbase";
 
-export function renameList(element) {
+export function updateList(element) {
   element.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -14,8 +14,6 @@ export function renameList(element) {
 }
 async function refactorList(id, newName) {
   const pb = new PocketBase("http://localhost:8090/");
-  
-    console.log("id " + id, newName)
 
   const data = {
     name: newName,
