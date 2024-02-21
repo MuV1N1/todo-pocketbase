@@ -11,12 +11,14 @@ import { freezeNote } from "./components/notes/freeze.js";
 import { unfreezeNote } from "./components/notes/unfreezeNote.js";
 import { selectList } from "./components/list/selectList.js";
 import { updateNoteList } from "./components/list/updateNoteList.js";
+import { setupList } from "./components/list/createList.js";
+import { removeList } from "./components/list/removeList.js";
+import { renameList } from "./components/list/renameList.js";
 //Connect to PocketBase
 const pb = new PocketBase("http://localhost:8090/");
 
 //get the records
 
-console.log("Test")
 let urlParams = new URLSearchParams(window.location.search);
 let selectedValue = urlParams.get("selectedValue");
 let selectedName = null;
@@ -39,7 +41,7 @@ noteLists.forEach((item) => {
 <option value="${item.id}">${item.name}</option>
 `);
 });
-// loop each item of records
+//loop each item of records
 records.forEach((item) => {
   //declare date's
   const date =
@@ -118,10 +120,10 @@ records.forEach((item) => {
   if (item.finished && !item.freeze) {
     prefix = "finished";
     icons.push(/*html*/ `
-    <i class="fa-solid fa-square-check"></i>
+    <i class="fa-solid fa-square-check" id="headerPrefixCheck"></i>
     `);
     header.push(/*html*/ `
-    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">✖️</button></li>
+    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note"><i class="fa-solid fa-triangle-exclamation"></i></button></li>
     <li><button id ="${item.id}" class="unfinishButton" type="button" data-tooltip="Mark the note as unfinished"><i class="fa-solid fa-hourglass-start"></i></button></li>
     `);
     footer.push(/*html*/ `
@@ -130,11 +132,11 @@ records.forEach((item) => {
     `);
   } else if (!item.finished && !item.freeze) {
     icons.push(/*html*/ `
-    <i class="fa-solid fa-hourglass-start"></i>
+    <i class="fa-solid fa-hourglass-start" id="headerPrefixHourglassStart"></i>
     `);
     header.push(/*html*/ `
-    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">🏆</button></li>
-    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed">❄️</button></li>
+    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished"><i class="fa-solid fa-trophy"></i></button></li>
+    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed"><i class="fa-solid fa-snowflake"></i></button></li>
     `);
     footer.push(/*html*/ `
     <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
@@ -143,11 +145,11 @@ records.forEach((item) => {
   } else if (item.freeze && !item.finished) {
     prefix = "freeze";
     icons.push(/*html*/ `
-    <i>🔒</i>
+    <i class="fa-solid fa-lock" id="headerPrefixLock"></i>
     `);
     header.push(/*html*/ `
-    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note">✖️</button></li>
-    <li><button id ="${item.id}" class="unfreezeButton" type="button" data-tooltip="Mark the note as not freezed">🔙</button></li>
+    <li><button id ="${item.id}" class="deleteButton" type="button" data-tooltip="Delete the current note"><i class="fa-solid fa-triangle-exclamation"></i></button></li>
+    <li><button id ="${item.id}" class="unfreezeButton" type="button" data-tooltip="Mark the note as not freezed"><i class="fa-solid fa-backward"></i></button></li>
     `);
     footer.push(/*html*/ `
     <p id="noteDeadline"><span id="deadlinePrefix">Freezed: </span> ${freezeDate}</p>
@@ -155,11 +157,11 @@ records.forEach((item) => {
     `);
   } else if (!item.freeze && !item.finished) {
     icons.push(/*html*/ `
-    <i class="fa-solid fa-hourglass-start"></i>
+    <i class="fa-solid fa-hourglass-start" id="headerPrefixHourglassStart"></i>
     `);
     header.push(/*html*/ `
-    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished">🏆</button></li>
-    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed">❄️</button></li>
+    <li><button id ="${item.id}" class="finishButton" type="button" data-tooltip="Mark the note as finished"><i class="fa-solid fa-trophy"></i></button></li>
+    <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed"><i class="fa-solid fa-snowflake"></i></button></li>
     `);
     footer.push(/*html*/ `
     <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
@@ -177,7 +179,7 @@ records.forEach((item) => {
             <input type="text" class="form-control" value="${item.title}" placeholder="Title..." id="newNoteTitle" maxlength="20" name="newNoteTitle">
             <input type="text" class="form-control" value="${item.text}" placeholder="Text..." id="newNoteText" name="newNoteText">
             <input type="date"  class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline">
-            <button type="submit" data-tooltip="Update the note" id="${item.id}">🔄</button>
+            <button type="submit" data-tooltip="Update the note" id="${item.id}"><i class="fa-solid fa-retweet"></i></button>
           </form>
         </article>
       </dialog>
@@ -191,7 +193,7 @@ records.forEach((item) => {
               <option selected disabled value="">${selectedName}</option>
               ${listNoteLi}
             </select>
-            <button type="submit" data-tooltip="Update the note list" id="${item.id}">🔄</button>
+            <button type="submit" data-tooltip="Update the note list" id="${item.id}"><i class="fa-solid fa-retweet"></i></button>
           </form>
         </article>
       </dialog>
@@ -214,7 +216,7 @@ records.forEach((item) => {
                   <li>
                   <button class="cahngeListModalButton" data-target="${
                     item.id
-                  }-" type="button" data-tooltip="Change the current List of he modal"><i class="fa-solid fa-retweet"></i>
+                  }-" type="button" data-tooltip="Change the current List of he modal"><i class="fa-solid fa-arrow-right-arrow-left"></i>
                 </li>
                   </ul>
                   ${icons}
@@ -268,46 +270,11 @@ records.forEach((item) => {
   }
 });
 
-// let manageListModal = [];
+let manageListModal = [];
 
-// manageListModal.push(/*html*/ `
-// <dialog id="createListModal">
-//   <article>
-//     <header>
-//       <h3>Create new list</h3>
-//     </header>
-//     <form id="newNoteList" action="">
-//       <input type="text" class="form-control" id="createListName" name="createListName" placeholder="Name...">
-//       <button type="submit" id="create" data-tooltip="Create a List">Create</button>
-//     </form>
-//   </article>
-// </dialog>
-// <dialog id="deleteListModal">
-//   <article>
-//     <header>
-//       <h3>Delete one list</h3>
-//     </header>
-//     <form id="deleteNoteList" action="">
-//       <select name="select" aria-label="Select" id="select"required>
-//       <option selected disabled value="">Select note to delete</option>
-//       ${listNoteLi}
-//       </select>
-//       <button type="submit" id="delete" data-tooltip="Delete a List">Delete</button>
-//     </form>
-//   </article>
-// </dialog>
-// <!--<dialog id="renameListModal">
-//   <article>
-//     <header>
-//       <h3>Rename</h3>
-//     </header>
-//     <form id="renameNoteList" action="">
-//       <input type="text" class="form-control" id="renameList" name="renameList" placeholder="New Name...">
-//       <button type="submit" id="create" data-tooltip="Create a List">Create</button>
-//     </form>
-//   </article>
-// </dialog>-->
-// `);
+manageListModal.push(/*html*/ `
+ 
+ `);
 
 //the create button and Heading
 if (selectedName == null) selectedName = "Select your list";
@@ -322,7 +289,10 @@ document.querySelector("#app").innerHTML = /*html*/ `
           </li>
           <li id="startItem">
             <button id ="createNote" data-target="createModal" type="button" data-tooltip="Create a new note"><i class="fa-solid fa-plus" id="plusFA"></i></button>
-          </li>     
+          </li>  
+          <li id="startItem">
+            <button id="manageList" data-target="manageLisModal" type="button" data-tooltip="Manage your lists"><i class="fa-solid fa-gear"></i></button>   
+          </li>   
           </ul>
           
           </button>
@@ -359,18 +329,73 @@ document.querySelector("#app").innerHTML = /*html*/ `
             </form>
           </article>
         </dialog>    
+        <dialog id="manageLisModal">
+          <article>
+            <header>
+              <h3>Managae your lists</h3>
+            </header>
+            <form id="manageListForm" action="">
+              <button type="button" id="createList" data-target="createListModal" data-tooltip="Create a lsit">Create</button>
+              <button type="button" id="deleteList" data-target="deleteListModal" data-tooltip="Delete a lsit">Delete</button>
+              <button type="button" id="renameList" data-target="renameListModal" data-tooltip="Rename a list">Rename</button>
+            </form>
+          </article>
+        </dialog>
+        <dialog id="createListModal">
+   <article>
+     <header>
+       <h3>Create new list</h3>
+     </header>
+     <form id="newNoteList" action="">
+       <input type="text" class="form-control" id="createListName" name="createListName" placeholder="Name...">
+       <button type="submit" id="createListButton" data-tooltip="Create a List">Create</button>
+    </form>
+</article>
+ </dialog>
+ <dialog id="deleteListModal">
+   <article>
+    <header>
+      <h3>Delete one list</h3>
+     </header>
+     <form id="deleteNoteList" action="">
+       <select name="select" aria-label="Select" id="select"required>
+      <option selected disabled value="">Select note to delete</option>
+       ${listNoteLi}
+       </select>
+      <button type="submit" data-tooltip="Delete a List">Delete</button>
+     </form>
+   </article>
+ </dialog>
+ <dialog id="renameListModal">
+   <article>
+     <header>
+      <h3>Rename</h3>
+    </header>
+     <form id="renameNoteList" action="">
+      <select name="select" aria-label="Select" id="select"required>
+      <option selected disabled value="">Select note to rename</option>
+       ${listNoteLi}
+       </select>
+      <input type="text" class="form-control" id="renameList" name="renameList" placeholder="New Name...">
+      <button type="submit" id="create" data-tooltip="Create a List">Create</button>
+    </form>
+   </article>
+ </dialog>  
     `;
+
+      
 
 //Note Stuff
 setupNote(document.querySelector("#newNote"), selectedValue);
 
+
 modal(document.querySelector("#switchList"));
 modal(document.querySelector("#createNote"));
-// modal(document.querySelector("#manageList"));
+modal(document.querySelector("#manageList"));
 
-// modal(document.querySelector("#createList"));
-// modal(document.querySelector("#renameList"));
-// modal(document.querySelector("#deleteList"));
+modal(document.querySelector("#createList"));
+modal(document.querySelector("#renameList"));
+modal(document.querySelector("#deleteList"));
 
 document.querySelectorAll(".updateModalButton").forEach((element) => {
   modal(element);
@@ -388,3 +413,6 @@ document.querySelectorAll(".deleteButton").forEach((element) => {
 });
 updateNote(document.querySelectorAll(".updateNote"));
 updateNoteList(document.querySelectorAll(".updateNoteList"));
+setupList(document.querySelector("#newNoteList"));
+removeList(document.querySelector("#deleteNoteList"))
+renameList(document.querySelector("#renameNoteList"))

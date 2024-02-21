@@ -11,9 +11,9 @@ export default function (element, bool) {
   element.addEventListener("click", (event) => {
     event.preventDefault();
     console.log(element.id)
-
     const modal = document.getElementById(event.currentTarget.dataset.target);
-    if(element.type != "button") openModal(modal);
+    if(element.type != "button") console.log(element.type);
+    if(isModalOpen(modal)) closeModal(modal);
     if (!modal) return;
     modal && (isModalOpen(modal) ? closeModal(modal) : openModal(modal));
   });

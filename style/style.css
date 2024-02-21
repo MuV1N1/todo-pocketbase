@@ -162,7 +162,16 @@ body {
   color: #000;
   width: auto;
   text-decoration: line-through;
-  text-decoration-color: rgba(0, 255, 0, 0.459);
+  text-decoration-color: rgba(17,223,17, 0.459);
+  text-decoration-thickness: 100%;
+  text-decoration-skip-ink: auto;
+  text-underline-offset: 1.25em;
+}
+.freeze{
+  color: #000;
+  width: auto;
+  text-decoration: line-through;
+  text-decoration-color: rgba(0, 195, 255, 0.459);
   text-decoration-thickness: 100%;
   text-decoration-skip-ink: auto;
   text-underline-offset: 1.25em;
@@ -180,8 +189,8 @@ body {
   border: 1px solid #ae00ff;
 }
 .unfreezeButton{
-  background-color: #dfeb35;
-  border: 1px solid #dfeb35;
+  background-color: #ae00ff;
+  border: 1px solid #ae00ff;
 }
 #startList{
   display: inline-block;
@@ -195,4 +204,13 @@ body {
   width: auto;
   min-width: 150px;
 
+}
+#headerPrefixCheck{
+  color: rgb(17, 223, 17);
+}
+#headerPrefixHourglassStart{
+  color: #000;
+}
+#headerPrefixLock{
+  color: #eed700;
 }
