@@ -414,5 +414,5 @@ document.querySelectorAll(".deleteButton").forEach((element) => {
 updateNote(document.querySelectorAll(".updateNote"));
 updateNoteList(document.querySelectorAll(".updateNoteList"));
 setupList(document.querySelector("#newNoteList"));
-removeList(document.querySelector("#deleteNoteList"))
-renameList(document.querySelector("#renameNoteList"))
+removeList(document.querySelector("#deleteNoteList"));
+renameList(document.querySelector("#renameNoteList"));
