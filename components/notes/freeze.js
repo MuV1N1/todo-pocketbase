@@ -10,7 +10,7 @@ export async function freezeNote(element) {
 
 function freeze(element) {
   element.addEventListener("click", async (e) => {
-    console.log("freeze")
+
     e.preventDefault();
     const id = element.id;
     const date = new Date();

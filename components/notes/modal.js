@@ -5,15 +5,13 @@ export default function (element, bool) {
   const openingClass = "modal-is-opening";
   const closingClass = "modal-is-closing";
   const scrollbarWidthCssVar = "--pico-scrollbar-width";
-  const animationDuration = 400; // ms
+  const animationDuration = 0; // ms
   let visibleModal = null;
-  
+
   element.addEventListener("click", (event) => {
     event.preventDefault();
-    console.log(element.id)
-
     const modal = document.getElementById(event.currentTarget.dataset.target);
-    if(element.type != "button") openModal(modal);
+
     if (!modal) return;
     modal && (isModalOpen(modal) ? closeModal(modal) : openModal(modal));
   });

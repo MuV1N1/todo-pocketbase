@@ -9,7 +9,7 @@ export async function updateNoteList(elements) {
           let selectedValue = selectElement.value;
           note(element ,selectedValue);
         } else {
-          console.error('Select element not found');
+          return;
         }
     });
 }
@@ -20,8 +20,6 @@ function note(element, value) {
     const id = element.id;
     let nid = "";
     nid = id.replace("-", "")
-    console.log("nid= " + nid);
-
     const data = {
       list: value,
     };

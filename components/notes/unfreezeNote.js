@@ -10,7 +10,6 @@ export async function unfreezeNote(element) {
 
 function unfreeze(element) {
   element.addEventListener("click", async (e) => {
-    console.log("unfreeze")
     e.preventDefault();
     const id = element.id;
     const data = {
