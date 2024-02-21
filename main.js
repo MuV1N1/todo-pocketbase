@@ -15,6 +15,7 @@ import { setupList } from "./components/list/createList.js";
 import { removeList } from "./components/list/removeList.js";
 import { updateList } from "./components/list/updateList.js";
 import { overDeadline } from "./components/validateDate.js";
+
 //Connect to PocketBase
 const pb = new PocketBase("http://localhost:8090/");
 
@@ -44,7 +45,6 @@ noteLists.forEach((item) => {
 });
 //loop each item of records
 records.forEach((item) => {
-
   //declare date's
   const currentDate = new Date().toLocaleString("de-DE", {
     timeZone: "Europe/Berlin",
@@ -68,7 +68,7 @@ records.forEach((item) => {
       month: "short",
       year: "numeric",
     }) + " Uhr";
-  let deadline = new Date(item.deadline).toLocaleString("de-DE", {
+  const deadline = new Date(item.deadline).toLocaleString("de-DE", {
     timeZone: "Europe/Berlin",
     weekday: "long",
     day: "2-digit",
@@ -116,12 +116,13 @@ records.forEach((item) => {
   let deadlineTime = "";
   let deadlineTooltip = "";
 
-  if(overDeadline(item.deadline)){
+  if (overDeadline(item.deadline)) {
     deadlineTime = "no";
-    deadlineTooltip = "The deadline you've set"
-  }else{
-    deadlineTime = "deadlineIsOver"
-    deadlineTooltip = "Your time is over set a new deadline or mark the note as finsihed"
+    deadlineTooltip = "The deadline you've set";
+  } else {
+    deadlineTime = "deadlineIsOver";
+    deadlineTooltip =
+      "Your time is over set a new deadline or mark the note as finsihed";
   }
   if (item.finished && item.freeze) return;
   switch (item.created === item.updated) {
@@ -226,16 +227,10 @@ records.forEach((item) => {
                   <ul class="delete">
                     ${header}
                   <li>
-                    <button class="updateModalButton" id="${
-                      item.id
-                    }" data-target="${
-        item.id
-      }" type="button" data-tooltip="Update the note"><i class="fa-solid fa-retweet"></i>
+                    <button class="updateModalButton" id="${item.id}" data-target="${item.id}" type="button" data-tooltip="Update the note"><i class="fa-solid fa-retweet"></i>
                   </li>
                   <li>
-                  <button class="cahngeListModalButton" data-target="${
-                    item.id
-                  }-" type="button" data-tooltip="Change the current List of he modal"><i class="fa-solid fa-arrow-right-arrow-left"></i>
+                  <button class="cahngeListModalButton" data-target="${item.id}-" type="button" data-tooltip="Change the current List of he modal"><i class="fa-solid fa-arrow-right-arrow-left"></i>
                 </li>
                   </ul>
                   ${icons}
@@ -247,7 +242,6 @@ records.forEach((item) => {
               <footer>
                 ${footer}
               </footer>
-              <!--${JSON.stringify(item)}-->
             </article>
           `);
       break;
@@ -260,14 +254,10 @@ records.forEach((item) => {
                     ${header}
                   </li>
                   <li>
-                  <button class="updateModalButton" data-target="${
-                    item.id
-                  }" type="button" data-tooltip="Update the note"><i class="fa-solid fa-retweet"></i>
+                  <button class="updateModalButton" data-target="${item.id}" type="button" data-tooltip="Update the note"><i class="fa-solid fa-retweet"></i>
                 </li>
                 <li>
-                  <button class="cahngeListModalButton" data-target="${
-                    item.id
-                  }-" type="button" data-tooltip="Change the current List of he modal"><i class="fa-solid fa-arrow-right-arrow-left"></i>
+                  <button class="cahngeListModalButton" data-target="${item.id}-" type="button" data-tooltip="Change the current List of he modal"><i class="fa-solid fa-arrow-right-arrow-left"></i>
                 </li>
               </ul>
                   ${icons}
@@ -275,14 +265,11 @@ records.forEach((item) => {
                 
               </header>
               <body>
-              <p class="${prefix}" id="noteText ${item.id}-text">${
-        item.text
-      }</p>
+              <p class="${prefix}" id="noteText ${item.id}-text">${item.text}</p>
               </body>
               <footer>
                 ${footer}
               </footer>
-              <!--${JSON.stringify(item)}-->
             </article>
           `);
       break;
@@ -295,7 +282,8 @@ manageListModal.push(/*html*/ `
  
  `);
 
-//the create button and Heading
+//Complete Header With the buttons
+//Code for the Modals
 if (selectedName == null) selectedName = "Select your list";
 document.querySelector("#app").innerHTML = /*html*/ `
       
@@ -384,13 +372,22 @@ document.querySelector("#app").innerHTML = /*html*/ `
  </dialog>  
     `;
 
-      
-
 //Modals
-let modalButtonList = ["#switchList", "#createNote", "#manageList", "#createList", "#updateList"];
+let modalButtonList = [
+  "#switchList",
+  "#createNote",
+  "#manageList",
+  "#createList",
+  "#updateList",
+];
+
 modalButtonList.forEach((element) => modal(document.querySelector(element)));
-document.querySelectorAll(".updateModalButton").forEach((element) => modal(element));
-document.querySelectorAll(".cahngeListModalButton").forEach((element) => modal(element));
+document
+  .querySelectorAll(".updateModalButton")
+  .forEach((element) => modal(element));
+document
+  .querySelectorAll(".cahngeListModalButton")
+  .forEach((element) => modal(element));
 
 //Setup the notes and Lists
 setupNote(document.querySelector("#newNote"), selectedValue);
@@ -401,7 +398,7 @@ updateList(document.querySelector("#updateNoteList"));
 updateNote(document.querySelectorAll(".updateNote"));
 updateNoteList(document.querySelectorAll(".updateNoteList"));
 
-//Start page
+//Select the list
 selectList(document.querySelector("#selectListForm"));
 
 //Freeze and Finish the notes
@@ -411,5 +408,5 @@ finishNote(document.querySelectorAll(".finishButton"));
 unfinishNote(document.querySelectorAll(".unfinishButton"));
 
 //Remove the notes and lists
-removeNote(document.querySelectorAll(".deleteButton"))
+removeNote(document.querySelectorAll(".deleteButton"));
 removeList(document.querySelector("#deleteList"));
