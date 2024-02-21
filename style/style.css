@@ -165,7 +165,9 @@ body {
   text-decoration-color: rgba(17,223,17, 0.459);
   text-decoration-thickness: 100%;
   text-decoration-skip-ink: auto;
-  text-underline-offset: 1.25em;
+  text-underline-offset: 0.2em;
+  text-align: center; 
+  vertical-align: middle;
 }
 .freeze{
   color: #000;
@@ -174,7 +176,7 @@ body {
   text-decoration-color: rgba(0, 195, 255, 0.459);
   text-decoration-thickness: 100%;
   text-decoration-skip-ink: auto;
-  text-underline-offset: 1.25em;
+  text-underline-offset:em;
 }
 .deleteButton{
   background-color: #ff0000;
@@ -213,4 +215,48 @@ body {
 }
 #headerPrefixLock{
   color: #eed700;
+}
+#deadlineIsOver{
+  color: red;
+  font-weight: bolder;
+}
+.column {
+  width: 100%;
+}
+@media screen and (max-width: 1315px) {
+  body {
+    display: block;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    max-height: 100%;
+  }
+
+  #app {
+    padding: 1rem;
+  }
+
+  .noteList header {
+    flex-direction: column;
+  }
+
+  .noteList .noteListHeader ul {
+    top: auto;
+    right: auto;
+    position: static;
+  }
+
+  .noteList footer {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .noteList footer #noteDate, .noteList footer #noteDeadline {
+    text-align: center;
+    flex-basis: 100%;
+  }
+
+  #above {
+    flex-direction: column;
+  }
 }

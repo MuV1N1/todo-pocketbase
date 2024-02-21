@@ -14,6 +14,7 @@ import { updateNoteList } from "./components/list/updateNoteList.js";
 import { setupList } from "./components/list/createList.js";
 import { removeList } from "./components/list/removeList.js";
 import { renameList } from "./components/list/renameList.js";
+import { overDeadline } from "./components/validateDate.js";
 //Connect to PocketBase
 const pb = new PocketBase("http://localhost:8090/");
 
@@ -26,7 +27,7 @@ const recordsUf = await pb.collection("notes").getFullList({
   sort: "sortBottom",
 });
 const noteLists = await pb.collection("list").getFullList({
-  sort: "created",
+  sort: "updated",
 });
 if (selectedValue !== null) {
   const currentList = await pb.collection("list").getOne(selectedValue, {});
@@ -43,7 +44,20 @@ noteLists.forEach((item) => {
 });
 //loop each item of records
 records.forEach((item) => {
+
   //declare date's
+  const currentDate = new Date().toLocaleString("de-DE", {
+    timeZone: "Europe/Berlin",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+  const currentDeadline = new Date(item.deadline).toLocaleString("de-DE", {
+    timeZone: "Europe/Berlin",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
   const date =
     new Date(item.created).toLocaleString("de-DE", {
       timeZone: "Europe/Berlin",
@@ -91,10 +105,6 @@ records.forEach((item) => {
       month: "short",
       year: "numeric",
     }) + " Uhr";
-  if (item.deadline == "Invalid Date") {
-    deadline = "No Deadline";
-  }
-  if (deadline == "Invalid Date") deadline = date;
 
   //rerange the whole thing
 
@@ -103,7 +113,16 @@ records.forEach((item) => {
   let header = [];
   let prefix = "";
   let createdOrUpdated = [];
+  let deadlineTime = "";
+  let deadlineTooltip = "";
 
+  if(overDeadline(item.deadline)){
+    deadlineTime = "no";
+    deadlineTooltip = "The deadline you've set"
+  }else{
+    deadlineTime = "deadlineIsOver"
+    deadlineTooltip = "Your time is over set a new deadline or mark the note as finsihed"
+  }
   if (item.finished && item.freeze) return;
   switch (item.created === item.updated) {
     case true:
@@ -139,7 +158,7 @@ records.forEach((item) => {
     <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed"><i class="fa-solid fa-snowflake"></i></button></li>
     `);
     footer.push(/*html*/ `
-    <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
+    <p id="noteDeadline"><span id="deadlinePrefix" data-tooltip="${deadlineTooltip}">Deadline: </span><span id="${deadlineTime}" data-tooltip="${deadlineTooltip}"> ${deadline}</span></p>
     ${createdOrUpdated}
     `);
   } else if (item.freeze && !item.finished) {
@@ -164,7 +183,7 @@ records.forEach((item) => {
     <li><button id ="${item.id}" class="freezeButton" type="button" data-tooltip="Mark the note as freezed"><i class="fa-solid fa-snowflake"></i></button></li>
     `);
     footer.push(/*html*/ `
-    <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span> ${deadline}</p>
+    <p id="noteDeadline"><span id="deadlinePrefix">Deadline: </span><span id="${deadlineTime}"> ${deadline}</span></p>
     ${createdOrUpdated}
     `);
   }
@@ -178,7 +197,7 @@ records.forEach((item) => {
           <form id=${item.id} class="updateNote" action=""> 
             <input type="text" class="form-control" value="${item.title}" placeholder="Title..." id="newNoteTitle" maxlength="20" name="newNoteTitle">
             <input type="text" class="form-control" value="${item.text}" placeholder="Text..." id="newNoteText" name="newNoteText">
-            <input type="date"  class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline">
+            <input type="date"  class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline" required>
             <button type="submit" data-tooltip="Update the note" id="${item.id}"><i class="fa-solid fa-retweet"></i></button>
           </form>
         </article>
@@ -309,7 +328,7 @@ document.querySelector("#app").innerHTML = /*html*/ `
         </header>
         <form id="selectListForm">
           <select name="select" aria-label="Select" id="select"required>
-            <option selected disabled value="">Select Note</option>
+            <option selected disabled value="">Select List</option>
             ${listNoteLi}
           </select>
           <button type="submit" class="submitButton">Submit</button>
@@ -324,7 +343,7 @@ document.querySelector("#app").innerHTML = /*html*/ `
             <form id="newNote" action="">
               <input type="text" class="form-control" placeholder="Title..." id="noteTitle" name="noteTitle" maxlength="20" title="Max. 20 Chars" required>
               <input type="text" class="form-control" placeholder="Note..." id="noteText" name="noteText" required>
-              <input type="date" class="form-control" id="noteDeadline" name="noteDeadline">
+              <input type="date" class="form-control" id="noteDeadline" name="noteDeadline" required>
               <button type="submit" id="create" data-tooltip="Create a note">Create</button>
             </form>
           </article>
@@ -335,9 +354,9 @@ document.querySelector("#app").innerHTML = /*html*/ `
               <h3>Managae your lists</h3>
             </header>
             <form id="manageListForm" action="">
-              <button type="button" id="createList" data-target="createListModal" data-tooltip="Create a lsit">Create</button>
-              <button type="button" id="deleteList" data-target="deleteListModal" data-tooltip="Delete a lsit">Delete</button>
-              <button type="button" id="renameList" data-target="renameListModal" data-tooltip="Rename a list">Rename</button>
+              <button type="button" id="createList" data-target="createListModal" data-tooltip="Create a list">Create</button>
+              <button type="button" id="deleteList" data-target="deleteListModal" data-tooltip="Delete the current list">Delete current</button>
+              <button type="button" id="renameList" data-target="renameListModal" data-tooltip="Rename the current list">Rename current</button>
             </form>
           </article>
         </dialog>
@@ -352,30 +371,12 @@ document.querySelector("#app").innerHTML = /*html*/ `
     </form>
 </article>
  </dialog>
- <dialog id="deleteListModal">
-   <article>
-    <header>
-      <h3>Delete one list</h3>
-     </header>
-     <form id="deleteNoteList" action="">
-       <select name="select" aria-label="Select" id="select"required>
-      <option selected disabled value="">Select note to delete</option>
-       ${listNoteLi}
-       </select>
-      <button type="submit" data-tooltip="Delete a List">Delete</button>
-     </form>
-   </article>
- </dialog>
  <dialog id="renameListModal">
    <article>
      <header>
       <h3>Rename</h3>
     </header>
      <form id="renameNoteList" action="">
-      <select name="select" aria-label="Select" id="select"required>
-      <option selected disabled value="">Select note to rename</option>
-       ${listNoteLi}
-       </select>
       <input type="text" class="form-control" id="renameList" name="renameList" placeholder="New Name...">
       <button type="submit" id="create" data-tooltip="Create a List">Create</button>
     </form>
@@ -395,7 +396,7 @@ modal(document.querySelector("#manageList"));
 
 modal(document.querySelector("#createList"));
 modal(document.querySelector("#renameList"));
-modal(document.querySelector("#deleteList"));
+
 
 document.querySelectorAll(".updateModalButton").forEach((element) => {
   modal(element);
@@ -414,5 +415,5 @@ document.querySelectorAll(".deleteButton").forEach((element) => {
 updateNote(document.querySelectorAll(".updateNote"));
 updateNoteList(document.querySelectorAll(".updateNoteList"));
 setupList(document.querySelector("#newNoteList"));
-removeList(document.querySelector("#deleteNoteList"));
+removeList(document.querySelector("#deleteList"));
 renameList(document.querySelector("#renameNoteList"));
