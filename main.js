@@ -18,13 +18,12 @@ import { overDeadline } from "./components/validateDate.js";
 import { setupAccount } from "./components/accounts/setupAccount.js";
 import { loginAccount } from "./components/accounts/loginAccount.js";
 import { logoutAccount } from "./components/accounts/logoutAccount.js";
+import { move } from "./components/progressBar.js";
 
 //Connect to PocketBase
 const pb = new PocketBase("http://localhost:8090/");
 
 //get the records
-
-
 
 let urlParams = new URLSearchParams(window.location.search);
 let selectedUserID = urlParams.get("selectedUserID");
@@ -32,7 +31,6 @@ let selectedListID = urlParams.get("selectedListID");
 let selectedListName = null;
 const recordsUf = await pb.collection("notes").getFullList({
   sort: "sortBottom",
-
 });
 const noteListsUf = await pb.collection("list").getFullList({
   sort: "updated",
@@ -43,7 +41,8 @@ let list = [];
 let listNoteLi = [];
 let noteLists = [];
 let accountName = "";
-
+let progressTotal = 0;
+let progressFinished = 0;
 if (selectedUserID !== null) {
   noteLists = noteListsUf.filter((item) => item.user === selectedUserID);
   records = recordsUf.filter((item) => item.list === selectedListID);
@@ -55,6 +54,10 @@ if (selectedUserID !== null) {
     const currentList = await pb.collection("list").getOne(selectedListID, {});
     selectedListName = currentList.name;
   }
+  records.forEach((item) => {
+    if (item.finished) progressFinished++;
+    progressTotal++;
+  });
   noteLists.forEach((item) => {
     listNoteLi.push(/*html*/ `
     <option value="${item.id}">${item.name}</option>
@@ -302,13 +305,13 @@ if (selectedUserID !== null) {
   //All of the Header with the buttons
   //Code for the Modals
   if (selectedListName == null) selectedListName = "Select your list";
-  
+
   let createButton = [];
-  if(selectedListID == null) createButton.push(/*html*/ ``);
+  if (selectedListID == null) createButton.push(/*html*/ ``);
   document.querySelector("#app").innerHTML = /*html*/ `
       
       <div class="topBar">
-        <section id="create">
+        <section id="createS">
           <h2>Welcome Back:<br><span id="accountNameH1">${accountName}</span></h2>
           <button type="button" id="logOut" data-tooltip="Logout of your Account"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
           <h2>${selectedListName}</h2>
@@ -323,7 +326,7 @@ if (selectedUserID !== null) {
             <button id="manageList" data-target="manageLisModal" type="button" data-tooltip="Manage your lists"><i class="fa-solid fa-gear"></i></button>   
           </li>   
           </ul>
-          
+          <div id="myProgress"><div id="myBar"></div></div>
           </button>
         </section>
         
@@ -351,9 +354,9 @@ if (selectedUserID !== null) {
               <h3>Create new note</h3>
             </header>
             <form id="newNote" action="">
-              <input type="text" class="form-control" placeholder="Title..." id="noteTitle" name="noteTitle" maxlength="20" title="Max. 20 Chars" required>
-              <input type="text" class="form-control" placeholder="Note..." id="noteText" name="noteText" required>
-              <input type="date" class="form-control" id="noteDeadline" name="noteDeadline" required>
+              <label for="noteTitle">Title</label><input type="text" class="form-control form-input" placeholder="Title..." id="noteTitle" name="noteTitle" maxlength="20" title="Max. 20 Chars" required>
+              <label for="noteText">Note</label><input type="text" class="form-control" placeholder="Note..." id="noteText" name="noteText" required>
+              <label for="noteDeadline">Deadline</label><input type="date" class="form-control" id="noteDeadline" name="noteDeadline" required>
               <button type="submit" id="create" data-tooltip="Create a note">Create</button>
             </form>
           </article>
@@ -364,9 +367,9 @@ if (selectedUserID !== null) {
               <h3>Managae your lists</h3>
             </header>
             <form id="manageListForm" action="">
-              <button type="button" id="createList" data-target="createListModal" data-tooltip="Create a list">Create</button>
+              <button type="button" id="createList" data-target="createListModal" data-tooltip="Create a list">Create new</button>
               <button type="button" id="deleteList" data-target="deleteListModal" data-tooltip="Delete the current list">Delete current</button>
-              <button type="button" id="updateList" data-target="updateListModal" data-tooltip="update the current list">update current</button>
+              <button type="button" id="updateList" data-target="updateListModal" data-tooltip="update the current list">Update current</button>
             </form>
           </article>
         </dialog>
@@ -376,7 +379,7 @@ if (selectedUserID !== null) {
        <h3>Create new list</h3>
      </header>
      <form id="newNoteList" action="">
-       <input type="text" class="form-control" id="createListName" name="createListName" placeholder="Name...">
+      <label for="createListName">List name</label><input type="text" class="form-control" id="createListName" name="createListName" placeholder="Name...">
        <button type="submit" id="createListButton" data-tooltip="Create a List">Create</button>
     </form>
 </article>
@@ -384,10 +387,10 @@ if (selectedUserID !== null) {
  <dialog id="updateListModal">
    <article>
      <header>
-      <h3>update</h3>
+      <h3>Update</h3>
     </header>
      <form id="updateNoteList" action="">
-      <input type="text" class="form-control" id="updateList" name="updateList" placeholder="New Name...">
+     <label for="updateList">New list name</label><input type="text" class="form-control" id="updateList" name="updateList" placeholder="New Name...">
       <button type="submit" id="create" data-tooltip="Create a List">Create</button>
     </form>
    </article>
@@ -432,6 +435,9 @@ if (selectedUserID !== null) {
   removeNote(document.querySelectorAll(".deleteButton"));
   removeList(document.querySelector("#deleteList"));
   logoutAccount(document.querySelector("#logOut"));
+
+  //progressBar
+  move(document.querySelector("#myBar"), progressFinished, progressTotal);
 } else {
   document.querySelector("#app").innerHTML = /*html*/ `
     <h1>You are not signed in!</h1>

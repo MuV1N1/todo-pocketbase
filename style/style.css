@@ -291,7 +291,8 @@ body {
 
   }
 }
-#create{
+
+#createS{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -310,4 +311,20 @@ body {
   text-decoration: underline;
   text-decoration-color: #555;
   text-decoration-thickness: 4px
+}
+#myProgress{
+  width: 100%;
+  background-color: #aaa;
+  border-radius: 10px;
+  z-index: 0;
+}
+#myBar{
+  width: 0%;
+  height: 40px;
+  background-color: #4CAF50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  z-index: 2;
 }
