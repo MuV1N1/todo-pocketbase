@@ -5,14 +5,15 @@ export function updateList(element) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    const newName = formData.get("renameList")
+    const newName = formData.get("updateList")
 
     let urlParams = new URLSearchParams(window.location.search);
-    let selectedValue = urlParams.get("selectedValue");
-    refactorList(selectedValue, newName);
+    let selectedListID = urlParams.get("selectedListID");
+    let selectedUserID = urlParams.get("selectedUserID");
+    refactorList(selectedListID, newName, selectedUserID);
   });
 }
-async function refactorList(id, newName) {
+async function refactorList(id, newName, uID) {
   const pb = new PocketBase("http://localhost:8090/");
 
   const data = {
@@ -20,5 +21,5 @@ async function refactorList(id, newName) {
   }
 
   await pb.collection("list").update(id, data);
-  location.href = "/index.html?selectedValue=" + id;
+  location.href = "/index.html?selectedUserID=" + uID + "&selectedListID=" + id;
 }

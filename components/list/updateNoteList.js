@@ -6,8 +6,8 @@ export async function updateNoteList(elements) {
     elements.forEach((element) => {
         let selectElement = element.querySelector('select[id="selectNewList"]');
         if (selectElement) {
-          let selectedValue = selectElement.value;
-          note(element ,selectedValue);
+          let selectedListID = selectElement.value;
+          note(element ,selectedListID);
         } else {
           return;
         }
