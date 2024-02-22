@@ -17,7 +17,7 @@ import { updateList } from "./components/list/updateList.js";
 import { overDeadline } from "./components/validateDate.js";
 
 //Connect to PocketBase
-const pb = new PocketBase("http://localhost:8090/");
+const pb = new PocketBase("http://45.93.251.164:8090/");
 
 //get the records
 

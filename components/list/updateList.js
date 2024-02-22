@@ -13,7 +13,7 @@ export function updateList(element) {
   });
 }
 async function refactorList(id, newName) {
-  const pb = new PocketBase("http://localhost:8090/");
+  const pb = new PocketBase("http://45.93.251.164:8090/");
 
   const data = {
     name: newName,
