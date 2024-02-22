@@ -8,23 +8,24 @@ export function removeList(element) {
 }
 async function deleteList() {
   let urlParams = new URLSearchParams(window.location.search);
-  let selectedValue = urlParams.get("selectedValue");
-  if (selectedValue == undefined) selectedValue = urlParams.get("select");
+  let selectedListID = urlParams.get("selectedListID");
+  if (selectedListID == undefined) selectedListID = urlParams.get("select");
+  let selectedUserID = urlParams.get("selectedUserID");
 
   if (
     confirm(
-      "When You delete the note list you'l never get it back! All your notes will be gone!"
+      "When You delete the note list you'l never get it back! All your notes of this list will be gone!"
     )
   ) {
     let records = await pb.collection("notes").getFullList();
 
     records.forEach(async (record) => {
-      if (record.list == selectedValue) {
+      if (record.list == selectedListID) {
         await pb.collection("notes").delete(record.id);
       }
     });
 
-    await pb.collection("list").delete(selectedValue);
-    location.href = "/index.html";
+    await pb.collection("list").delete(selectedListID);
+    location.href = "/index.html?selectedUserID=" + selectedUserID;
   }
 }

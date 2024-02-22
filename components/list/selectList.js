@@ -1,7 +1,9 @@
 export function selectList(element) {
   element.addEventListener("submit", function (event) {
     event.preventDefault();
-    let selectedValue = this.select.value;
-    location.href = "/index.html?selectedValue=" + encodeURIComponent(selectedValue);
+    let urlParams = new URLSearchParams(window.location.search);
+    const selectedUserID = urlParams.get("selectedUserID"); 
+    let selectedListID = this.select.value;
+    location.href = "/index.html?selectedUserID=" + selectedUserID + "&selectedListID=" + encodeURIComponent(selectedListID);
   });
 }
