@@ -1,4 +1,4 @@
-import PocketBase from "pocketbase";
+import PocketBase from "./pocketbase";
 
 const pb = new PocketBase("https://remember-ring.pockethost.io/");
 const users = await pb.collection("users").getFullList({
