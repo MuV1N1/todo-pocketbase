@@ -1,8 +1,22 @@
-# vite ⚡
+# TODO List
+This project is my personaly first JavaScript and HTML project! 
+I coded it in my school intership! I personally got a nice time at Fricke in the e-comerce department. I learned much!!!
+
+It is possible that not everything is written in the right JavaScript HTML or css syntax. 
+
+I can tell you when you want to get an developer in future. You have to learn things and if something don't work instantly NEVER give up you get it in future!!!
+
+This is the last commit on this Project for a long period I currently don't know how long this period will be!
+
+## Pocketbase
+
+This project is using PocketBase!
+
+## vite ⚡
 
 > Next Generation Frontend Tooling
 
-- 💡 Instant Server Start
+- 💡 Instant SerTver Start
 - ⚡️ Lightning Fast HMR
 - 🛠️ Rich Features
 - 📦 Optimized Build
