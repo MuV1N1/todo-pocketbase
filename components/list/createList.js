@@ -1,4 +1,5 @@
-import PocketBase from "pocketbase";
+import PocketBase from "./pocketbase";
+
 
 export function setupList(element) {
   element.addEventListener("submit", (e) => {

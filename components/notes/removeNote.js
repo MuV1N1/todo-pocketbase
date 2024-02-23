@@ -1,4 +1,5 @@
-import PocketBase from "pocketbase";
+import PocketBase from "./pocketbase";
+
 
 export function removeNote(element) {
   if (element === null) return;
