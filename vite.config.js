@@ -4,6 +4,7 @@ import dns from 'dns'
 dns.setDefaultResultOrder('verbatim')
 
 export default defineConfig({
+  base: "/todo-pocketabse/",
   server:{
     proxy:{
         '/api': {
@@ -13,7 +14,8 @@ export default defineConfig({
           },
     }
   },
-  build: {
+  build:{
     target: 'esnext'
   }
 })
+
