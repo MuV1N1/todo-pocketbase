@@ -2,7 +2,7 @@ import "./style/pico.min.css";
 import "./style/style.css";
 import { setupNote } from "./components/notes/create.js";
 import modal from "./components/modal.js";
-import PocketBase from "./node_modules/pocketbase/dist/pocketbase.es.mjs";
+import PocketBase from "./pocketbase.es.mjs";
 import { removeNote } from "./components/notes/removeNote.js";
 import { updateNote } from "./components/notes/updateNote.js";
 import { finishNote } from "./components/notes/finishNote.js";
@@ -22,6 +22,8 @@ import { move } from "./components/progressBar.js";
 
 //Connect to PocketBase
 const pb = new PocketBase("https://remember-ring.pockethost.io//");
+
+setInterval(() => pb, 6000);
 
 //get the records
 
