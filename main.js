@@ -2,7 +2,8 @@ import "./style/pico.min.css";
 import "./style/style.css";
 import { setupNote } from "./components/notes/create.js";
 import modal from "./components/modal.js";
-import PocketBase from "./pocketbase/pocketbase";
+import PocketBase from "pocketbase";
+
 
 import { removeNote } from "./components/notes/removeNote.js";
 import { updateNote } from "./components/notes/updateNote.js";

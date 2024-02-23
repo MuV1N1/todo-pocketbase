@@ -9,7 +9,7 @@ lerna-debug.log*
 
 node_modules
 pocketbase
-dist
+
 dist-ssr
 *.local
 
