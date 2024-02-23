@@ -1,5 +1,4 @@
-import "./style/pico.min.css";
-import "./style/style.css";
+
 import { setupNote } from "./components/notes/create.js";
 import modal from "./components/modal.js";
 import PocketBase from "pocketbase";
