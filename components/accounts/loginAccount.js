@@ -1,4 +1,5 @@
-import PocketBase from "pocketbase";
+import PocketBase from "./pocketbase.es.mjs"
+";
 
 
 export function loginAccount(element) {
