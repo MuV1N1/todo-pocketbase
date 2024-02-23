@@ -7,13 +7,15 @@ export function setupList(element) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const name = formData.get("createListName");
-    create(name);
+    let urlParams = new URLSearchParams(window.location.search);
+    let selectedUserID = urlParams.get("selectedUserID");
+    create(name, selectedUserID);
   });
 }
-async function create(name) {
+async function create(name, user) {
   const pb = new PocketBase("https://remember-ring.pockethost.io/");
-  await pb.collection("list").create({ name: name });
+  await pb.collection("list").create({ name: name, user: user });
   let recordsuf = pb.collection("list").getFullList();
   let records = await recordsuf;
-  records.forEach(item => location.href="/index.html?selectedValue=" + item.id);
+  records.forEach(item => location.href="/index.html?selectedUserID=" + user + "&selectedValue=" + item.id);
 }

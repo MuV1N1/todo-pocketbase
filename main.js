@@ -2,9 +2,7 @@ import "./style/pico.min.css";
 import "./style/style.css";
 import { setupNote } from "./components/notes/create.js";
 import modal from "./components/modal.js";
-import PocketBase from "pocketbase";
-
-
+import PocketBase from "./node_modules/pocketbase/dist/pocketbase.es.js";
 import { removeNote } from "./components/notes/removeNote.js";
 import { updateNote } from "./components/notes/updateNote.js";
 import { finishNote } from "./components/notes/finishNote.js";
@@ -439,7 +437,11 @@ if (selectedUserID !== null) {
   logoutAccount(document.querySelector("#logOut"));
 
   //progressBar
-  move(document.querySelector("#myBar"), progressFinished, progressTotal);
+  if(selectedListName != "Select your list"){
+    move(document.querySelector("#myBar"), progressFinished, progressTotal)
+  }else{
+
+  }
 } else {
   document.querySelector("#app").innerHTML = /*html*/ `
     <h1>You are not signed in!</h1>
