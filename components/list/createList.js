@@ -1,7 +1,5 @@
 import PocketBase from "pocketbase";
 
-
-
 export function setupList(element) {
   element.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -13,7 +11,7 @@ export function setupList(element) {
   });
 }
 async function create(name, user) {
-  const pb = new PocketBase("https://remember-ring.pockethost.io/");
+  const pb = new PocketBase("http://localhost:8090");
   await pb.collection("list").create({ name: name, user: user });
   let recordsuf = pb.collection("list").getFullList();
   let records = await recordsuf;

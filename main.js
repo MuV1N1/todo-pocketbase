@@ -1,7 +1,8 @@
-import PocketBase from 'pocketbase';
+
 import { setupNote } from "/components/notes/create.js";
 import modal from "./components/modal.js";
 import { removeNote } from "./components/notes/removeNote.js";
+import PocketBase from 'pocketbase';
 import { updateNote } from "./components/notes/updateNote.js";
 import { finishNote } from "./components/notes/finishNote.js";
 import { unfinishNote } from "./components/notes/unfinishNote.js";
@@ -17,15 +18,12 @@ import { setupAccount } from "./components/accounts/setupAccount.js";
 import { loginAccount } from "./components/accounts/loginAccount.js";
 import { logoutAccount } from "./components/accounts/logoutAccount.js";
 import { move } from "./components/progressBar.js";
-import { migrate } from "./components/migrateDataFromOldToNewDB.js";
 
 //Connect to PocketBase
-const pb = new PocketBase("http://localhost:8090/");
-
-setInterval(() => pb, 6000);
+const pb = new PocketBase("http://localhost:8090");
 
 //get the records
-//migrate();
+
 let urlParams = new URLSearchParams(window.location.search);
 let selectedUserID = urlParams.get("selectedUserID");
 let selectedListID = urlParams.get("selectedListID");
@@ -44,6 +42,7 @@ let noteLists = [];
 let accountName = "";
 let progressTotal = 0;
 let progressFinished = 0;
+let createButtonTooltip = "";
 if (selectedUserID !== null) {
   noteLists = noteListsUf.filter((item) => item.user === selectedUserID);
   records = recordsUf.filter((item) => item.list === selectedListID);
@@ -217,9 +216,9 @@ if (selectedUserID !== null) {
             <h3>Update</h3>
           </header>
           <form id=${item.id} class="updateNote" action=""> 
-            <input type="text" class="form-control" value="${item.title}" placeholder="Title..." id="newNoteTitle" maxlength="20" name="newNoteTitle">
-            <input type="text" class="form-control" value="${item.text}" placeholder="Text..." id="newNoteText" name="newNoteText">
-            <input type="date"  class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline" required>
+          <label for="newNoteTitle">Title </label><input type="text" class="form-control" value="${item.title}" placeholder="Title..." id="newNoteTitle" maxlength="20" name="newNoteTitle">
+          <label for="newNoteText">Text </label><input type="text" class="form-control" value="${item.text}" placeholder="Text..." id="newNoteText" name="newNoteText">
+          <label for="newNoteDeadline">Deadline </label><input type="date"  class="form-control" value="${item.deadline}" id="newNoteDeadline..." name="newNoteDeadline" required>
             <button type="submit" data-tooltip="Update the note" id="${item.id}"><i class="fa-solid fa-retweet"></i></button>
           </form>
         </article>
@@ -305,7 +304,12 @@ if (selectedUserID !== null) {
 
   //All of the Header with the buttons
   //Code for the Modals
-  if (selectedListName == null) selectedListName = "Select your list";
+  if (selectedListName == null){ 
+    createButtonTooltip = "Disabled";
+    selectedListName = "Select your list";
+}else{
+  createButtonTooltip = "Create a new note";
+}
 
   let createButton = [];
   if (selectedListID == null) createButton.push(/*html*/ ``);
@@ -321,7 +325,7 @@ if (selectedUserID !== null) {
             <button id="switchList" type="button" data-target="selectListModal" data-tooltip="Switch between your list">${selectedListName}</button>
           </li>
           <li id="startItem">
-            <button id ="createNote" data-target="createModal" type="button" data-tooltip="Create a new note"><i class="fa-solid fa-plus" id="plusFA"></i></button>
+            <button id ="createNote" data-target="createModal" type="button" data-tooltip="${createButtonTooltip}"><i class="fa-solid fa-plus" id="plusFA"></i></button>
           </li>  
           <li id="startItem">
             <button id="manageList" data-target="manageLisModal" type="button" data-tooltip="Manage your lists"><i class="fa-solid fa-gear"></i></button>   
@@ -400,11 +404,15 @@ if (selectedUserID !== null) {
   //Modals
   let modalButtonList = [
     "#switchList",
-    "#createNote",
     "#manageList",
     "#createList",
     "#updateList",
   ];
+
+  if(selectedListName != "Select your list") {
+    modalButtonList.push("#createNote");
+    
+  }
 
   modalButtonList.forEach((element) => modal(document.querySelector(element)));
   document
@@ -415,7 +423,7 @@ if (selectedUserID !== null) {
     .forEach((element) => modal(element));
 
   //Setup the notes and Lists
-  setupNote(document.querySelector("#newNote"), selectedListID);
+  setupNote(document.querySelector("#newNote"), selectedListID, selectedUserID);
   setupList(document.querySelector("#newNoteList"));
 
   //Update the notes and lists
@@ -441,14 +449,14 @@ if (selectedUserID !== null) {
   if(selectedListName != "Select your list"){
     move(document.querySelector("#myBar"), progressFinished, progressTotal)
   }else{
-
+    document.querySelector("#myProgress").style.display = "none";
   }
 } else {
   document.querySelector("#app").innerHTML = /*html*/ `
     <h1>You are not signed in!</h1>
     <h4>Please sign in to see your notes and lists</h4>
     <div class="topBar">
-        <section id="create">
+        <section id="createS">
         <ul id="startList">
           <li id="startItem">
             <button id ="createAccountButton" data-target="createAccountModal" type="button" data-tooltip="Register"><i class="fa-solid fa-plus"></i></button>
@@ -465,10 +473,10 @@ if (selectedUserID !== null) {
           <h3>Register</h3>
         </header>
         <form id="createAccountForm" action="">
-          <input type="email" class="form-control" id="createAccountEmail" name="createAccountEmail" placeholder="Email..."  required>
-          <input type="text" class="form-control" id="createAccountName" name="createAccountName" placeholder="Name..." required>
-          <input type="password" class="form-control" id="createAccountPassword" name="createAccountPassword" placeholder="Password..." min-length="8" max-length="72" required>
-          <input type="password" class="form-control" id="createAccountPasswordRepeat" name="createAccountConfirmPassword" placeholder="Repeat Password..." min-length="8" max-length="72" required>
+          <label for="createAccountEmail">Email </label><input type="email" class="form-control" id="createAccountEmail" name="createAccountEmail" placeholder="Email..."  required>
+          <label for="createAccountName">Username </label><input type="text" class="form-control" id="createAccountName" name="createAccountName" placeholder="Name..." required>
+          <label for="createAccountPassword">Password </label><input type="password" class="form-control" id="createAccountPassword" name="createAccountPassword" placeholder="Password..." min-length="8" max-length="72" required>
+          <label for="createAccountPasswordRepeat">Repeat Password </label><input type="password" class="form-control" id="createAccountPasswordRepeat" name="createAccountConfirmPassword" placeholder="Repeat Password..." min-length="8" max-length="72" required>
           <button type="submit" id="create" data-tooltip="Register a new Account">Register</button>
         </form>
       </article>
@@ -479,9 +487,9 @@ if (selectedUserID !== null) {
           <h3>Login</h3>
         </header>
         <form id="loginAccountForm" action="">
-          <input type="email" class="form-control" id="loginAccounEmail" name="loginEmail" placeholder="Your account email" required>
-          <input type="password" class="form-control" id="loginAccounPassword" name="loginPassword" placeholder="Your password" required>
-          <button type="submit" id="create" data-tooltip="Login to your Account">Login</button>
+        <label for="loginAccountEmail">Email </label><input type="email" class="form-control" id="loginAccounEmail" name="loginEmail" placeholder="Your account email" required>
+        <label for="loginAccountPassword">Password </label><input type="password" class="form-control" id="loginAccounPassword" name="loginPassword" placeholder="Your password" required>
+        <button type="submit" id="create" data-tooltip="Login to your Account">Login</button>
         </form>
       </article>
     </dialog>

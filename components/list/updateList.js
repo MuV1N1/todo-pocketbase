@@ -1,8 +1,5 @@
 import PocketBase from "pocketbase";
 
-
-
-
 export function updateList(element) {
   element.addEventListener("submit", (e) => {
     e.preventDefault();

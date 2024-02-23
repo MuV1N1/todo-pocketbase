@@ -1,7 +1,5 @@
 import PocketBase from "pocketbase";
 
-
-
 export function loginAccount(element) {
   element.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -12,7 +10,7 @@ export function loginAccount(element) {
   });
 }
 async function login(email, password) {
-  const pb = new PocketBase("https://remember-ring.pockethost.io/");
+  const pb = new PocketBase("http://localhost:8090");
 
   try{
   const authData = await pb
