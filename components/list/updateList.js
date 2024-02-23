@@ -1,4 +1,4 @@
-import PocketBase from "./pocketbase.es.mjs";
+import PocketBase from "pocketbase";
 
 
 
@@ -16,7 +16,7 @@ export function updateList(element) {
   });
 }
 async function refactorList(id, newName) {
-  const pb = new PocketBase("https://remember-ring.pockethost.io//");
+  const pb = new PocketBase("http://127.0.0.1:8090");
 
   const data = {
     name: newName,

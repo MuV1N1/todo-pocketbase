@@ -1,30 +1,31 @@
-import PocketBase from "./pocketbase.es.mjs";
+import PocketBase from "pocketbase";
 import { setupNote } from "/components/notes/create.js";
 import modal from "./components/modal.js";
-import { removeNote } from "/components/notes/removeNote.js";
-import { updateNote } from "/components/notes/updateNote.js";
-import { finishNote } from "/components/notes/finishNote.js";
-import { unfinishNote } from "/components/notes/unfinishNote.js";
-import { freezeNote } from "/components/notes/freeze.js";
-import { unfreezeNote } from "/components/notes/unfreezeNote.js";
-import { selectList } from ".components/list/selectList.js";
-import { updateNoteList } from "/components/list/updateNoteList.js";
-import { setupList } from "/components/list/createList.js";
-import { removeList } from "/components/list/removeList.js";
-import { updateList } from "/components/list/updateList.js";
-import { overDeadline } from "/components/validateDate.js";
-import { setupAccount } from "/components/accounts/setupAccount.js";
-import { loginAccount } from "/components/accounts/loginAccount.js";
-import { logoutAccount } from "/components/accounts/logoutAccount.js";
-import { move } from "/components/progressBar.js";
+import { removeNote } from "./components/notes/removeNote.js";
+import { updateNote } from "./components/notes/updateNote.js";
+import { finishNote } from "./components/notes/finishNote.js";
+import { unfinishNote } from "./components/notes/unfinishNote.js";
+import { freezeNote } from "./components/notes/freeze.js";
+import { unfreezeNote } from "./components/notes/unfreezeNote.js";
+import { selectList } from "./components/list/selectList.js";
+import { updateNoteList } from "./components/list/updateNoteList.js";
+import { setupList } from "./components/list/createList.js";
+import { removeList } from "./components/list/removeList.js";
+import { updateList } from "./components/list/updateList.js";
+import { overDeadline } from "./components/validateDate.js";
+import { setupAccount } from "./components/accounts/setupAccount.js";
+import { loginAccount } from "./components/accounts/loginAccount.js";
+import { logoutAccount } from "./components/accounts/logoutAccount.js";
+import { move } from "./components/progressBar.js";
+import { migrate } from "./components/migrateDataFromOldToNewDB.js";
 
 //Connect to PocketBase
-const pb = new PocketBase("https://remember-ring.pockethost.io//");
+const pb = new PocketBase("http://127.0.0.1:8090");
 
 setInterval(() => pb, 6000);
 
 //get the records
-
+//migrate();
 let urlParams = new URLSearchParams(window.location.search);
 let selectedUserID = urlParams.get("selectedUserID");
 let selectedListID = urlParams.get("selectedListID");

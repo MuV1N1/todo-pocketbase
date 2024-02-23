@@ -1,4 +1,4 @@
-import PocketBase from "./pocketbase.es.mjs";
+import PocketBase from "pocketbase";
 
 
 

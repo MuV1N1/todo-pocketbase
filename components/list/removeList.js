@@ -1,8 +1,8 @@
-import PocketBase from "./pocketbase.es.mjs";
+import PocketBase from "pocketbase";
 
 
 
-const pb = new PocketBase("https://remember-ring.pockethost.io//");
+const pb = new PocketBase("http://127.0.0.1:8090");
 export function removeList(element) {
   element.addEventListener("click", (e) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import PocketBase from "./pocketbase.es.mjs";
+import PocketBase from "pocketbase";
 
 
 
@@ -23,7 +23,7 @@ export function removeNote(element) {
   });
 }
 async function deleteNote(id) {
-  const pb = new PocketBase("https://remember-ring.pockethost.io//");
+  const pb = new PocketBase("http://127.0.0.1:8090");
   await pb.collection("notes").delete(id);
   location.reload(false);
 }
