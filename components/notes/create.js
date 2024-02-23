@@ -1,4 +1,5 @@
-import PocketBase from 'pocketbase';
+import PocketBase from "./pocketbase/pocketbase";
+
 
 export function setupNote(element, list) {
 

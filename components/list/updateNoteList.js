@@ -1,4 +1,4 @@
-import PocketBase from "./pocketbase";
+import PocketBase from "./pocketbase/pocketbase";
 
 
 const pb = new PocketBase("https://remember-ring.pockethost.io//");

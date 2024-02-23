@@ -1,4 +1,4 @@
-import PocketBase from "./pocketbase";
+import PocketBase from "./pocketbase/pocketbase";
 
 
 export function setupList(element) {
