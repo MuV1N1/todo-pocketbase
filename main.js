@@ -1,7 +1,7 @@
 
 import { setupNote } from "./components/notes/create.js";
 import modal from "./components/modal.js";
-import PocketBase from "pocketbase";
+import PocketBase from "./pocketbase";
 import { removeNote } from "./components/notes/removeNote.js";
 import { updateNote } from "./components/notes/updateNote.js";
 import { finishNote } from "./components/notes/finishNote.js";
