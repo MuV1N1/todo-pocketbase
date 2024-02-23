@@ -20,7 +20,7 @@ export function removeNote(element) {
   });
 }
 async function deleteNote(id) {
-  const pb = new PocketBase("http://45.93.251.164:8090/");
+  const pb = new PocketBase("https://remember-ring.pockethost.io//");
   await pb.collection("notes").delete(id);
   location.reload(false);
 }

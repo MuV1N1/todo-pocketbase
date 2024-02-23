@@ -15,7 +15,7 @@ export function setupNote(element, list) {
   });
 }
 async function create(title, note, date, list) {
-  const pb = new PocketBase("http://45.93.251.164:8090/");
+  const pb = new PocketBase("https://remember-ring.pockethost.io//");
 
   if(list !== null){
     const data = {

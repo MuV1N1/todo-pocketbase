@@ -21,7 +21,7 @@ import { logoutAccount } from "./components/accounts/logoutAccount.js";
 import { move } from "./components/progressBar.js";
 
 //Connect to PocketBase
-const pb = new PocketBase("http://45.93.251.164:8090/");
+const pb = new PocketBase("https://remember-ring.pockethost.io//");
 
 //get the records
 

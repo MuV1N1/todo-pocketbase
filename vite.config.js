@@ -8,7 +8,7 @@ export default defineConfig({
   server:{
     proxy:{
         '/api': {
-            target: 'http://45.93.251.164:8090',
+            target: 'https://remember-ring.pockethost.io/',
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/api/, ''),
           },

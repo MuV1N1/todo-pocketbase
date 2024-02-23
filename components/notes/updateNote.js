@@ -1,6 +1,6 @@
 import PocketBase from 'pocketbase';
 
-const pb = new PocketBase("http://45.93.251.164:8090/");
+const pb = new PocketBase("https://remember-ring.pockethost.io//");
 
 export async function updateNote(element){
     element.forEach(element => {
