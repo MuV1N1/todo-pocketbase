@@ -1,4 +1,4 @@
-import PocketBase from "pocketbase";
+import PocketBase from pocketbase;
 import { setupNote } from "/components/notes/create.js";
 import modal from "./components/modal.js";
 import { removeNote } from "./components/notes/removeNote.js";
