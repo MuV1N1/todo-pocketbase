@@ -1,4 +1,4 @@
-import PocketBase from pocketbase;
+import PocketBase from 'pocketbase';
 import { setupNote } from "/components/notes/create.js";
 import modal from "./components/modal.js";
 import { removeNote } from "./components/notes/removeNote.js";
@@ -20,7 +20,7 @@ import { move } from "./components/progressBar.js";
 import { migrate } from "./components/migrateDataFromOldToNewDB.js";
 
 //Connect to PocketBase
-const pb = new PocketBase("http://127.0.0.1:8090");
+const pb = new PocketBase("http://localhost:8090/");
 
 setInterval(() => pb, 6000);
 

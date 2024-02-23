@@ -18,7 +18,7 @@ export function setupNote(element, list) {
   });
 }
 async function create(title, note, date, list) {
-  const pb = new PocketBase("http://127.0.0.1:8090");
+  const pb = new PocketBase("http://localhost:8090");
 
   if(list !== null){
     const data = {

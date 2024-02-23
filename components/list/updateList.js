@@ -16,7 +16,7 @@ export function updateList(element) {
   });
 }
 async function refactorList(id, newName) {
-  const pb = new PocketBase("http://127.0.0.1:8090");
+  const pb = new PocketBase("http://localhost:8090");
 
   const data = {
     name: newName,
