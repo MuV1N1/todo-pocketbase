@@ -20,7 +20,7 @@ import { logoutAccount } from "./components/accounts/logoutAccount.js";
 import { move } from "./components/progressBar.js";
 
 //Connect to PocketBase
-const pb = new PocketBase("http://localhost:8090");
+const pb = new PocketBase("http://45.93.251.164:8090");
 
 //get the records
 
@@ -34,7 +34,10 @@ const recordsUf = await pb.collection("notes").getFullList({
 const noteListsUf = await pb.collection("list").getFullList({
   sort: "updated",
 });
-
+fetch('https://example.com', {
+  mode: 'cors',
+  credentials: 'include'
+})
 let records = [];
 let list = [];
 let listNoteLi = [];
@@ -477,7 +480,7 @@ if (selectedUserID !== null) {
           <label for="createAccountName">Username </label><input type="text" class="form-control" id="createAccountName" name="createAccountName" placeholder="Name..." required>
           <label for="createAccountPassword">Password </label><input type="password" class="form-control" id="createAccountPassword" name="createAccountPassword" placeholder="Password..." min-length="8" max-length="72" required>
           <label for="createAccountPasswordRepeat">Repeat Password </label><input type="password" class="form-control" id="createAccountPasswordRepeat" name="createAccountConfirmPassword" placeholder="Repeat Password..." min-length="8" max-length="72" required>
-          <button type="submit" id="create" data-tooltip="Register a new Account">Register</button>
+          <button type="submit" id="register" data-tooltip="Register a new Account">Register</button>
         </form>
       </article>
     </dialog>
@@ -487,8 +490,8 @@ if (selectedUserID !== null) {
           <h3>Login</h3>
         </header>
         <form id="loginAccountForm" action="">
-        <label for="loginAccountEmail">Email </label><input type="email" class="form-control" id="loginAccounEmail" name="loginEmail" placeholder="Your account email" required>
-        <label for="loginAccountPassword">Password </label><input type="password" class="form-control" id="loginAccounPassword" name="loginPassword" placeholder="Your password" required>
+        <label for="loginAccountEmail">Email </label><input type="email" class="form-control" id="loginAccountEmail" name="loginEmail" placeholder="Your account email" required>
+        <label for="loginAccountPassword">Password </label><input type="password" class="form-control" id="loginAccountPassword" name="loginPassword" placeholder="Your password" required>
         <button type="submit" id="create" data-tooltip="Login to your Account">Login</button>
         </form>
       </article>

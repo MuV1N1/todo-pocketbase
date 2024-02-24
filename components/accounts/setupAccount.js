@@ -2,7 +2,7 @@ import PocketBase from "pocketbase";
 
 
 
-const pb = new PocketBase("http://localhost:8090");
+const pb = new PocketBase("http://45.93.251.164:8090");
 const users = await pb.collection("users").getFullList({
   sort: "-created",
 });
