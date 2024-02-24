@@ -11,7 +11,7 @@ export function setupList(element) {
   });
 }
 async function create(name, user) {
-  const pb = new PocketBase("http://45.93.251.164:8090");
+  const pb = new PocketBase("https://45.93.251.164:8090");
   await pb.collection("list").create({ name: name, user: user });
   let recordsuf = pb.collection("list").getFullList();
   let records = await recordsuf;

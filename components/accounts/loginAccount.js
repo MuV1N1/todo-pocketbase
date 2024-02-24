@@ -10,7 +10,7 @@ export function loginAccount(element) {
   });
 }
 async function login(email, password) {
-  const pb = new PocketBase("http://45.93.251.164:8090");
+  const pb = new PocketBase("https://45.93.251.164:8090");
 
   try{
   const authData = await pb
