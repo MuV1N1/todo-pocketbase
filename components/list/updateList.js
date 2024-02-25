@@ -13,7 +13,7 @@ export function updateList(element) {
   });
 }
 async function refactorList(id, newName) {
-  const pb = new PocketBase("https://45.93.251.164:8090");
+  const pb = new PocketBase("https://todolis.pockethost.io/");
 
   const data = {
     name: newName,

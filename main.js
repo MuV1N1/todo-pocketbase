@@ -20,7 +20,7 @@ import { logoutAccount } from "./components/accounts/logoutAccount.js";
 import { move } from "./components/progressBar.js";
 
 //Connect to PocketBase
-const pb = new PocketBase("http://45.93.251.164:8090");
+const pb = new PocketBase("https://todolis.pockethost.io/");
 
 //get the records
 
@@ -34,10 +34,7 @@ const recordsUf = await pb.collection("notes").getFullList({
 const noteListsUf = await pb.collection("list").getFullList({
   sort: "updated",
 });
-fetch('https://example.com', {
-  mode: 'cors',
-  credentials: 'include'
-})
+
 let records = [];
 let list = [];
 let listNoteLi = [];

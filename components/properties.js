@@ -1,3 +1,3 @@
-export function "https://45.93.251.164:8090" {
+export function "https://todolis.pockethost.io/" {
   return "localhost:8090";
 }
