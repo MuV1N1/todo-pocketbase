@@ -20,8 +20,12 @@ import { logoutAccount } from "./components/accounts/logoutAccount.js";
 import { move } from "./components/progressBar.js";
 
 //Connect to PocketBase
-const pb = new PocketBase("https://todolis.pockethost.io/");
 
+const pb = new PocketBase("https://todolis.pockethost.io/");
+ 
+setInterval(async () => {
+  const pbr = await pb.collection("notes").getFullList({});
+}, 1000);
 //get the records
 
 let urlParams = new URLSearchParams(window.location.search);
