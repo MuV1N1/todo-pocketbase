@@ -48,6 +48,47 @@ body {
     background-color: #ffffff;
   }
 }
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #ffffff;
+    background-color: #213547;
+  }
+  .noteList footer #noteDateUpdate #dateUpdatePrefix{
+    color: rgba(164, 164, 180, 0.425);
+    bottom: 0;
+    left: 0;
+    
+  }
+  .finished{
+    color: #fff;
+    width: auto;
+    text-decoration: line-through;
+    text-decoration-color: rgba(17,223,17, 0.459);
+    text-decoration-thickness: 100%;
+    text-decoration-skip-ink: auto;
+    text-underline-offset: 0.2em;
+    text-align: center; 
+    vertical-align: middle;
+  }
+  .freeze{
+    color: #fff;
+    width: auto;
+    text-decoration: line-through;
+    text-decoration-color: rgba(0, 195, 255, 0.459);
+    text-decoration-thickness: 100%;
+    text-decoration-skip-ink: auto;
+    text-underline-offset:em;
+  }
+  #headerPrefixHourglassStart{
+    color: #fff;
+  }
+  #accountNameH1{
+    color: #9b9b9b;
+    text-decoration: underline;
+    text-decoration-color: #555;
+    text-decoration-thickness: 4px
+  }
+}
 #modal-example > article > header > h3{
   text-align: center;
   margin-bottom: 0px;
@@ -65,8 +106,6 @@ body {
   align-items: center;
   position: relative;
 }
-
-
 
 .noteList h5{
   margin: 1px;
