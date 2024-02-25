@@ -12,9 +12,6 @@ export function setupList(element) {
 }
 async function create(name, user) {
   const pb = new PocketBase("https://todolis.pockethost.io/");
-  await pb.collection("list").create({ name: name, user: user });
-  let recordsuf = pb.collection("list").getFullList();
-  let records = await recordsuf;
-  records.forEach(item => location.href = "/todo-pocketbase/index.html?selectedUserID=" + user + "&selectedValue=" + item.id);
-  
+  const record = await pb.collection("list").create({ name: name, user: user });
+  location.href = "/todo-pocketbase/index.html?selectedUserID=" + user + "selectedListID=" + record.id;
 }
