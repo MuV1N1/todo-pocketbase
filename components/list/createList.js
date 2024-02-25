@@ -16,4 +16,5 @@ async function create(name, user) {
   let recordsuf = pb.collection("list").getFullList();
   let records = await recordsuf;
   records.forEach(item => location.href = "/todo-pocketbase/index.html?selectedUserID=" + user + "&selectedValue=" + item.id);
+  
 }
