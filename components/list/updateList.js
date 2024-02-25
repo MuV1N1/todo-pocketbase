@@ -20,5 +20,5 @@ async function refactorList(id, newName) {
   }
 
   await pb.collection("list").update(id, data);
-  location.href = "/index.html?selectedValue=" + id;
+  location.href = "/todo-pocketbase/index.html?selectedValue=" + id;
 }

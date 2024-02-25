@@ -31,7 +31,7 @@ async function create(name, email, password, confirmPassword) {
     };
     try{
       const record = await pb.collection('users').create(data);
-      location.href = "/index.html?selectedUserID=" + record.id;
+      location.href = "/todo-pocketbase/index.html?selectedUserID=" + record.id;
     }catch(err){
       alert("Account already exists with that email address, or name! Please login or use a different email address.");
     }

@@ -4,6 +4,6 @@ export function selectList(element) {
     let urlParams = new URLSearchParams(window.location.search);
     const selectedUserID = urlParams.get("selectedUserID"); 
     let selectedListID = this.select.value;
-    location.href = "/index.html?selectedUserID=" + selectedUserID + "&selectedListID=" + encodeURIComponent(selectedListID);
+    location.href = "/todo-pocketbase/index.html?selectedUserID=" + selectedUserID + "&selectedListID=" + encodeURIComponent(selectedListID);
   });
 }

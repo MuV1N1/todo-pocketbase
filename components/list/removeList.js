@@ -27,6 +27,6 @@ async function deleteList() {
     });
 
     await pb.collection("list").delete(selectedListID);
-    location.href = "/index.html?selectedUserID=" + selectedUserID;
+    location.href = "/todo-pocketbase/index.html?selectedUserID=" + selectedUserID;
   }
 }

@@ -17,7 +17,7 @@ async function login(email, password) {
     .collection("users")
     .authWithPassword(email, password);
     
-    location.href = "/index.html?selectedUserID=" + authData.record.id;
+    location.href = "/todo-pocketbase/index.html?selectedUserID=" + authData.record.id;
   
   }catch(err){
     alert("Invalid email or password");
