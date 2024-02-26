@@ -474,7 +474,7 @@ if (selectedUserID !== null) {
           <h3>Register</h3>
         </header>
         <form id="createAccountForm" action="">
-          <label for="createAccountEmail">Email </label><input type="email" class="form-control" id="createAccountEmail" name="createAccountEmail" placeholder="Email..."  required>
+          <label for="createAccountEmail">Email or username </label><input type="text" class="form-control" id="createAccountEmail" name="createAccountEmail" placeholder="Email..."  required>
           <label for="createAccountName">Username </label><input type="text" class="form-control" id="createAccountName" name="createAccountName" placeholder="Name..." required>
           <label for="createAccountPassword">Password </label><input type="password" class="form-control" id="createAccountPassword" name="createAccountPassword" placeholder="Password..." min-length="8" max-length="72" required>
           <label for="createAccountPasswordRepeat">Repeat Password </label><input type="password" class="form-control" id="createAccountPasswordRepeat" name="createAccountConfirmPassword" placeholder="Repeat Password..." min-length="8" max-length="72" required>
