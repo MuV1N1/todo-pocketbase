@@ -13,5 +13,5 @@ export function setupList(element) {
 async function create(name, user) {
   const pb = new PocketBase("https://todolis.pockethost.io/");
   const record = await pb.collection("list").create({ name: name, user: user });
-  location.href = "/todo-pocketbase/index.html?selectedUserID=" + user + "?selectedListID=" + record.id;
+  location.href = "/todo-pocketbase/index.html?selectedUserID=" + user + "&selectedListID=" + record.id;
 }
