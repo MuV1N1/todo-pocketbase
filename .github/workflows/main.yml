@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: dir
-        run: cd plainjs
+        run: cd ./plainjs
       - name: Checkout
         uses: actions/checkout@v4
       - name: Set up Node
