@@ -27,7 +27,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-    - name: dir
+      - name: dir
         run: cd plainjs
       - name: Checkout
         uses: actions/checkout@v4
