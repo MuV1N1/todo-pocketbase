@@ -30,16 +30,16 @@ jobs:
      
       - name: Checkout
         uses: actions/checkout@v4
-      - name: dir
-        run: cd ./plainjs
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'npm'
       - name: Install dependencies
+        run: cd ./plainjs
         run: npm install
       - name: Build
+        run: cd ./plainjs
         run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v3
