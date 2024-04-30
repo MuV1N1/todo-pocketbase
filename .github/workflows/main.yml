@@ -35,8 +35,6 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-      - name: Set dir
-        run: cd ./plainjs
       - name: Install dependencies
         run: npm run build
       - name: Build
