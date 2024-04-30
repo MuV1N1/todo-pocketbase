@@ -27,10 +27,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: dir
-        run: cd ./plainjs
+     
       - name: Checkout
         uses: actions/checkout@v4
+      - name: dir
+        run: cd ./plainjs
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
