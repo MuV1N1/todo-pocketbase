@@ -1,15 +1,11 @@
-import PocketBase from "pocketbase";
-
-const pb = new PocketBase("https://todolis.pockethost.io/");
-
-export async function updateNote(element){
+export async function updateNote(element, pb){
     element.forEach(element => {
-        note(element)
+        note(element, pb)
     });
     
 }
 
-function note(element) {
+function note(element, b) {
     element.addEventListener("submit", async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);

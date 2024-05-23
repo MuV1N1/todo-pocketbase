@@ -1,6 +1,6 @@
 import PocketBase from "pocketbase";
 
-export function removeNote(element) {
+export function removeNote(element, pb) {
   if (element === null) return;
   element.forEach((item) => {
     item.addEventListener("click", (e) => {
@@ -12,15 +12,14 @@ export function removeNote(element) {
         )
       ) {
         e.preventDefault();
-        deleteNote(item.id);
+        deleteNote(item.id, pb);
       } else {
         return;
       }
     });
   });
 }
-async function deleteNote(id) {
-  const pb = new PocketBase("https://todolis.pockethost.io/");
+async function deleteNote(id, pb) {
   await pb.collection("notes").delete(id);
   location.reload(false);
 }

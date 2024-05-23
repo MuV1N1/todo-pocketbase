@@ -1,14 +1,13 @@
 import PocketBase from "pocketbase";
 
-const pb = new PocketBase("https://todolis.pockethost.io/");
 
-export async function unfinishNote(element) {
+export async function unfinishNote(element, pb) {
   element.forEach((element) => {
-    unfinish(element);
+    unfinish(element), pb;
   });
 }
 
-function unfinish(element) {
+function unfinish(element, pb) {
   element.addEventListener("click", async (e) => {
     e.preventDefault();
     const id = element.id;

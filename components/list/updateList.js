@@ -1,6 +1,6 @@
 import PocketBase from "pocketbase";
 
-export function updateList(element) {
+export function updateList(element, pb) {
   element.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -9,12 +9,10 @@ export function updateList(element) {
 
     let urlParams = new URLSearchParams(window.location.search);
     let selectedValue = urlParams.get("selectedValue");
-    refactorList(selectedValue, newName);
+    refactorList(selectedValue, newName, pb);
   });
 }
-async function refactorList(id, newName) {
-  const pb = new PocketBase("https://todolis.pockethost.io/");
-
+async function refactorList(id, newName, pb) {
   const data = {
     name: newName,
   }

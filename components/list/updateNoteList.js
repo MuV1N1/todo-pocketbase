@@ -1,20 +1,19 @@
 import PocketBase from "pocketbase";
 
-const pb = new PocketBase("https://todolis.pockethost.io/");
 
-export async function updateNoteList(elements) {
+export async function updateNoteList(elements, pb) {
     elements.forEach((element) => {
         let selectElement = element.querySelector('select[id="selectNewList"]');
         if (selectElement) {
           let selectedListID = selectElement.value;
-          note(element ,selectedListID);
+          note(element ,selectedListID, pb);
         } else {
           return;
         }
     });
 }
 
-function note(element, value) {
+function note(element, value, pb) {
   element.addEventListener("submit", async (e) => {
     e.preventDefault();
     const id = element.id;

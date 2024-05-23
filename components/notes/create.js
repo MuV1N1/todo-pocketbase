@@ -1,6 +1,6 @@
 import PocketBase from "pocketbase";
 
-export function setupNote(element, list, user) {
+export function setupNote(element, list, user, pb) {
 
   element.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -10,12 +10,11 @@ export function setupNote(element, list, user) {
     const note = formData.get("noteText");
     const date = formData.get("noteDeadline");
     
-    create(title, note, date, list, user);
+    create(title, note, date, list, user, pb);
     // handle submit
   });
 }
-async function create(title, note, date, list, user) {
-  const pb = new PocketBase("https://todolis.pockethost.io/");
+async function create(title, note, date, list, user, pb) {
 
   if(list !== null){
     const data = {

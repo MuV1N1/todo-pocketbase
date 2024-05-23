@@ -1,13 +1,12 @@
 import PocketBase from "pocketbase";
 
-const pb = new PocketBase("https://todolis.pockethost.io/");
-export function removeList(element) {
+export function removeList(element, pb) {
   element.addEventListener("click", (e) => {
     e.preventDefault();
-    deleteList();
+    deleteList(pb);
   });
 }
-async function deleteList() {
+async function deleteList(pb) {
   let urlParams = new URLSearchParams(window.location.search);
   let selectedListID = urlParams.get("selectedListID");
   if (selectedListID == undefined) selectedListID = urlParams.get("select");

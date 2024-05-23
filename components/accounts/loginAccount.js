@@ -1,6 +1,6 @@
 import PocketBase from "pocketbase";
 
-export function loginAccount(element) {
+export function loginAccount(element, pocketBase) {
   element.addEventListener("submit", (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -10,7 +10,6 @@ export function loginAccount(element) {
   });
 }
 async function login(email, password) {
-  const pb = new PocketBase("https://todolis.pockethost.io/");
 
   try{
   const authData = await pb

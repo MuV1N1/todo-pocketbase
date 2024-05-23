@@ -424,27 +424,27 @@ if (selectedUserID !== null) {
     .forEach((element) => modal(element));
 
   //Setup the notes and Lists
-  setupNote(document.querySelector("#newNote"), selectedListID, selectedUserID);
-  setupList(document.querySelector("#newNoteList"));
+  setupNote(document.querySelector("#newNote"), selectedListID, selectedUserID, pb);
+  setupList(document.querySelector("#newNoteList"). pb);
 
   //Update the notes and lists
-  updateList(document.querySelector("#updateNoteList"));
-  updateNote(document.querySelectorAll(".updateNote"));
-  updateNoteList(document.querySelectorAll(".updateNoteList"));
+  updateList(document.querySelector("#updateNoteList"), pb);
+  updateNote(document.querySelectorAll(".updateNote"), pb);
+  updateNoteList(document.querySelectorAll(".updateNoteList"), pb);
 
   //Select the list
   selectList(document.querySelector("#selectListForm"));
 
   //Freeze and Finish the notes
-  freezeNote(document.querySelectorAll(".freezeButton"));
-  unfreezeNote(document.querySelectorAll(".unfreezeButton"));
-  finishNote(document.querySelectorAll(".finishButton"));
-  unfinishNote(document.querySelectorAll(".unfinishButton"));
+  freezeNote(document.querySelectorAll(".freezeButton"), pb);
+  unfreezeNote(document.querySelectorAll(".unfreezeButton"), pb);
+  finishNote(document.querySelectorAll(".finishButton"), pb);
+  unfinishNote(document.querySelectorAll(".unfinishButton"),pb);
 
   //Remove the notes and lists
-  removeNote(document.querySelectorAll(".deleteButton"));
-  removeList(document.querySelector("#deleteList"));
-  logoutAccount(document.querySelector("#logOut"));
+  removeNote(document.querySelectorAll(".deleteButton")), pb;
+  removeList(document.querySelector("#deleteList"), pb);
+  logoutAccount(document.querySelector("#logOut"), pb);
 
   //progressBar
   if(selectedListName != "Select your list"){
@@ -497,6 +497,6 @@ if (selectedUserID !== null) {
   `;
   let modalButtonList = ["#createAccountButton", "#loginAccountButton"];
   modalButtonList.forEach((element) => modal(document.querySelector(element)));
-  setupAccount(document.querySelector("#createAccountForm"));
-  loginAccount(document.querySelector("#loginAccountForm"));
+  setupAccount(document.querySelector("#createAccountForm"), pb);
+  loginAccount(document.querySelector("#loginAccountForm"), pb);
 }

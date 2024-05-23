@@ -1,13 +1,8 @@
-import PocketBase from "pocketbase";
 
-
-
-const pb = new PocketBase("https://todolis.pockethost.io/");
-const users = await pb.collection("users").getFullList({
-  sort: "-created",
-});
-
-export function setupAccount(element) {
+export async function setupAccount(element, pocketBase) {
+  const users = await pb.collection("users").getFullList({
+    sort: "-created",
+  });
   element.addEventListener("submit", (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);

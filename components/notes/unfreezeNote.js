@@ -1,14 +1,10 @@
-import PocketBase from "pocketbase";
-
-const pb = new PocketBase("https://todolis.pockethost.io/");
-
-export async function unfreezeNote(element) {
+export async function unfreezeNote(element, pb) {
   element.forEach((element) => {
-    unfreeze(element);
+    unfreeze(element, pb);
   });
 }
 
-function unfreeze(element) {
+function unfreeze(element, pb) {
   element.addEventListener("click", async (e) => {
     e.preventDefault();
     const id = element.id;
