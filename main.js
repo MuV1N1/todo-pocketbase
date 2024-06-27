@@ -26,6 +26,14 @@ const pb = new PocketBase("https://todolis.pockethost.io/");
 //get the records
 
 let urlParams = new URLSearchParams(window.location.search);
+
+//beginn recode with cookies
+
+
+
+//End of cookie logik
+
+
 let selectedUserID = urlParams.get("selectedUserID");
 let selectedListID = urlParams.get("selectedListID");
 let selectedListName = null;

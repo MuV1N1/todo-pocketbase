@@ -12,11 +12,13 @@ export function loginAccount(element, pocketBase) {
 async function login(email, password) {
 
   try{
-  const authData = await pb
+  const data = await pb
     .collection("users")
     .authWithPassword(email, password);
     
-    location.href = "/todo-pocketbase/index.html?selectedUserID=" + authData.record.id;
+    document.cookie = "id=" + data.id; 
+
+    location.href = "/todo-pocketbase/index.html?selectedUserID=" + data.record.id;
   
   }catch(err){
     alert("Invalid email or password");
