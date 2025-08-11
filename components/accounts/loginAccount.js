@@ -1,5 +1,3 @@
-import PocketBase from "pocketbase";
-
 export function loginAccount(element, pocketBase) {
   element.addEventListener("submit", (e) => {
     e.preventDefault();
